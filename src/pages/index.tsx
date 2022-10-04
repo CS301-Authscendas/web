@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
+import { Login } from '../components/login';
 
 const Home: NextPage = () => {
-  return <div className="flex flex-col">asd</div>;
+  return <Login />;
 };
 
 export default Home;

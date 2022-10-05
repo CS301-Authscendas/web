@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 
 interface IButtonProps {
-  onSubmit: () => void;
+  onSubmit?: () => void;
   text: string;
   isDisabled?: boolean;
 }
@@ -16,7 +16,7 @@ export const Button = ({ onSubmit, text, isDisabled }: IButtonProps) => {
   const handleOnSubmit = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    if (onSubmit) {
+    if (!isDisabled && onSubmit) {
       onSubmit();
     }
   };

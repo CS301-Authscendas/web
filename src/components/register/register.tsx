@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
 import { Button } from '../common';
 
-interface IFormState {
+interface IRegisterPayload {
   email: string;
   firstName: string;
   lastName: string;
@@ -12,7 +12,7 @@ interface IFormState {
   agreeTNC: boolean;
 }
 
-export const Login: React.FC = () => {
+export const Register: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -57,13 +57,15 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     setIsDisabled(
-      !email ||
-        !firstName ||
-        !lastName ||
-        !phoneNumber ||
-        !birthDate ||
-        !password ||
-        !agreeTNC
+      !(
+        email &&
+        firstName &&
+        lastName &&
+        phoneNumber &&
+        birthDate &&
+        password &&
+        agreeTNC
+      )
     );
   }, [email, firstName, lastName, phoneNumber, birthDate, password, agreeTNC]);
 
@@ -75,8 +77,7 @@ export const Login: React.FC = () => {
       phoneNumber,
       birthDate,
       password,
-      agreeTNC,
-      'here'
+      agreeTNC
     );
   };
 
@@ -155,7 +156,7 @@ export const Login: React.FC = () => {
         <div className="text-custom-blue-default">terms and conditions</div>
       </div>
       <Button
-        onSubmit={() => handleOnSubmit()}
+        onSubmit={handleOnSubmit}
         text="Sign Up"
         isDisabled={isDisabled}
       />

@@ -8,7 +8,7 @@ interface IButtonProps {
 
 export const Button = ({ onSubmit, text, isDisabled }: IButtonProps) => {
   const buttonStyle = classnames({
-    'flex w-full h-12 items-center justify-center rounded-lg bg-custom-blue-light cursor-pointer':
+    'flex w-full h-10 items-center justify-center rounded-md bg-custom-blue-light cursor-pointer':
       true,
     'cursor-not-allowed bg-custom-blue-lighter': isDisabled
   });

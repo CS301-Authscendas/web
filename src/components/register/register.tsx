@@ -82,11 +82,11 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="w-[30rem] space-y-5">
+    <div className="w-[30rem] space-y-3">
       <div className="flex flex-col">
         <label htmlFor="email">Email</label>
         <input
-          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
           name="email"
           type="text"
           value={email}
@@ -97,7 +97,7 @@ export const Register: React.FC = () => {
         <div className="flex flex-col w-full">
           <label htmlFor="firstName">First Name</label>
           <input
-            className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+            className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
             name="firstName"
             type="text"
             value={firstName}
@@ -107,7 +107,7 @@ export const Register: React.FC = () => {
         <div className="flex flex-col w-full">
           <label htmlFor="lastName">Last Name</label>
           <input
-            className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+            className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
             name="lastName"
             type="text"
             value={lastName}
@@ -118,7 +118,7 @@ export const Register: React.FC = () => {
       <div className="flex flex-col">
         <label htmlFor="phoneNumber">Phone Number</label>
         <input
-          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
           name="phoneNumber"
           type="text"
           value={phoneNumber}
@@ -128,7 +128,7 @@ export const Register: React.FC = () => {
       <div className="flex flex-col">
         <label htmlFor="birt">Birth Date</label>
         <input
-          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
           name="birthDate"
           type="text"
           value={birthDate}
@@ -138,7 +138,7 @@ export const Register: React.FC = () => {
       <div className="flex flex-col">
         <label htmlFor="password">Password</label>
         <input
-          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-md border-gray-200 border p-3 focus:border-custom-blue-default"
           name="password"
           type="password"
           value={password}

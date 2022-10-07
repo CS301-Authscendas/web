@@ -11,6 +11,7 @@ import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import { Header } from 'antd/lib/layout/layout';
 import { AccessControlManagement } from '../components/accessControlManagement';
+import { UploadFile } from '../components/uploadFile';
 
 const { Content, Sider } = Layout;
 
@@ -79,9 +80,7 @@ const Home: NextPage = () => {
             style={{ padding: 24, minHeight: 360 }}
           >
             {tab === Labels.ACCESS_CONTROL && <AccessControlManagement />}
-            {tab === Labels.UPLOAD_FILE && (
-              <div className="text-2xl font-medium">Upload File </div>
-            )}
+            {tab === Labels.UPLOAD_FILE && <UploadFile />}
             {tab === Labels.REWARDS && (
               <div className="text-2xl font-medium">Rewards</div>
             )}

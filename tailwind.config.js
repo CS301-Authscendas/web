@@ -7,6 +7,9 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
+    letterSpacing: {
+      widest: '.5em'
+    },
     extend: {
       fontFamily: {
         sans: ['DM Sans', ...defaultTheme.fontFamily.sans]

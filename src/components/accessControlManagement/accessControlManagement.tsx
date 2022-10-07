@@ -43,17 +43,20 @@ const columns: ColumnsType<DataType> = [
     title: 'User ID',
     dataIndex: 'userId',
     key: 'userId',
-    render: text => <a>{text}</a>
+    render: text => <a>{text}</a>,
+    sorter: (a, b) => (a.userId > b.userId ? 1 : -1)
   },
   {
     title: 'Name',
     dataIndex: 'name',
-    key: 'name'
+    key: 'name',
+    sorter: (a, b) => (a.name > b.name ? 1 : -1)
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    key: 'email'
+    key: 'email',
+    sorter: (a, b) => (a.email > b.email ? 1 : -1)
   },
   {
     title: 'Last Updated',
@@ -140,15 +143,15 @@ const columns: ColumnsType<DataType> = [
     filters: [
       {
         text: Status.ACTIVE,
-        value: 'active'
+        value: Status.ACTIVE
       },
       {
-        text: 'inactive',
-        value: 'inactive'
+        text: Status.INACTIVE,
+        value: Status.INACTIVE
       },
       {
-        text: 'pending',
-        value: 'pending'
+        text: Status.PENDING,
+        value: Status.PENDING
       }
     ],
     filterMode: 'tree',
@@ -171,29 +174,38 @@ const data: DataType[] = [
   {
     key: '1',
     userId: 'aT3te0gmr3im9',
-    name: 'John Brown',
-    email: 'john.brown@gmail.com',
+    name: 'Amy',
+    email: 'amy.brown@gmail.com',
     lastUpdated: '2021-10-14 12:02:33',
     roles: [Roles.ADMIN, Roles.NON_ADMIN],
     status: Status.INACTIVE
   },
   {
     key: '2',
-    userId: 'aT3te0gmr3im9',
-    name: 'John Brown',
-    email: 'john.brown@gmail.com',
+    userId: 'cT3te0gmr3im9',
+    name: 'Bobby',
+    email: 'bobby.brown@gmail.com',
     lastUpdated: '2021-10-14 12:02:33',
     roles: [Roles.OWNER],
     status: Status.ACTIVE
   },
   {
     key: '3',
-    userId: 'aT3te0gmr3im9',
-    name: 'John Brown',
-    email: 'john.brown@gmail.com',
+    userId: 'bT3te0gmr3im9',
+    name: 'Dan',
+    email: 'dan.brown@gmail.com',
     lastUpdated: '2021-10-14 12:02:33',
     roles: [Roles.ADMIN, Roles.OWNER],
     status: Status.PENDING
+  },
+  {
+    key: '4',
+    userId: 'dT3te0gmr3im9',
+    name: 'Cathy',
+    email: 'cathy.brown@gmail.com',
+    lastUpdated: '2021-10-14 12:02:33',
+    roles: [Roles.NON_ADMIN],
+    status: Status.ACTIVE
   }
 ];
 

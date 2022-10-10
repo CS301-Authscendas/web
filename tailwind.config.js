@@ -20,6 +20,10 @@ module.exports = {
             default: '#5C73DB',
             light: '#4763E4',
             lighter: '#639cf7'
+          },
+          white: {
+            light: '#F5F5F5',
+            dark: '#F0F2F5'
           }
         }
       }

@@ -35,20 +35,20 @@ export const Login: React.FC = () => {
 
   return (
     <div className="w-[30rem] space-y-3">
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-2">
         <label htmlFor="email">Email</label>
         <input
-          className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
           name="email"
           type="text"
           value={email}
           onChange={handleOnChange}
         />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-2">
         <label htmlFor="password">Password</label>
         <input
-          className="rounded-md border-gray-200 border p-3 focus:border-custom-blue-default"
+          className="rounded-lg border-gray-200 border p-3 focus:border-custom-blue-default"
           name="password"
           type="password"
           value={password}
@@ -56,31 +56,28 @@ export const Login: React.FC = () => {
         />
       </div>
       <div className="text-center">
-        {'Forgot your password?'}
+        <span>Forgot your password? </span>
         <Link href="/forgot-password">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter">
-            {' '}
+          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
             Reset password
           </a>
         </Link>
       </div>
-      <Button onSubmit={handleOnSubmit} text="Log in" isDisabled={isDisabled} />
+      <Button onSubmit={handleOnSubmit} text="Login" isDisabled={isDisabled} />
       <div className="text-center">
-        {"Don't have an account yet?"}
+        <span>Don&apos;t have an account yet? </span>
         <Link href="/register">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter">
-            {' '}
+          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
             Register
           </a>
         </Link>
       </div>
       <hr />
       <div className="text-center">
-        {'Have QA credentials?'}
+        <span>Have QA credentials? </span>
         <Link href="/register">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter">
-            {' '}
-            Sign inwith SSO
+          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
+            Sign in with SSO
           </a>
         </Link>
       </div>

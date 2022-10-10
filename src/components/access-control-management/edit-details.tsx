@@ -2,7 +2,6 @@ import { Form, Input, Select } from 'antd';
 import { ERoles, EStatus, IDataType } from './types';
 
 interface IProps extends IDataType {
-  setFormData: (data: IDataType) => void;
   form: any;
 }
 
@@ -14,7 +13,7 @@ const validateMessages = {
   }
 };
 
-export const EditDetails = ({ setFormData, form, ...props }: IProps) => {
+export const EditDetails = ({ form, ...props }: IProps) => {
   const renderRoleOptions = () =>
     Object.keys(ERoles).map(role => {
       return (
@@ -33,17 +32,8 @@ export const EditDetails = ({ setFormData, form, ...props }: IProps) => {
       );
     });
 
-  const handleOnFinish = (values: IDataType) => {
-    setFormData(values);
-  };
-
   return (
-    <Form
-      form={form}
-      onFinish={handleOnFinish}
-      validateMessages={validateMessages}
-      initialValues={props}
-    >
+    <Form form={form} validateMessages={validateMessages} initialValues={props}>
       <Form.Item name="name" label="Name">
         <Input />
       </Form.Item>

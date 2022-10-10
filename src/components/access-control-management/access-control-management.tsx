@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useModal } from '../../providers';
 import { HomeContent } from '../common';
 import { data } from './data';
+import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
 import { ERoles, ERolesColor, EStatus, EStatusColor, IDataType } from './types';
 
@@ -144,7 +145,10 @@ export const AccessControlManagement: React.FC = () => {
             onClick={() => handleOnEdit(record)}
             style={{ color: '#5C73DB' }}
           />
-          <DeleteOutlined style={{ color: '#DC2626' }} />
+          <DeleteOutlined
+            onClick={() => handleOnDelete(record.name)}
+            style={{ color: '#DC2626' }}
+          />
         </div>
       )
     }
@@ -155,13 +159,25 @@ export const AccessControlManagement: React.FC = () => {
   };
 
   const handleOnEdit = (record: IDataType) => {
+    form.resetFields();
     setModal({
       title: `Edit details for ${name}`,
-      body: <EditDetails {...record} setFormData={setFormData} form={form} />,
+      body: <EditDetails {...record} form={form} />,
       callback: () => async () => {
-        form.submit();
-        console.log('Receiving outside', formData);
         // TODO: Send to backend
+        console.log('Updating user account', form.getFieldsValue());
+      }
+    });
+    setIsOpen(true);
+  };
+
+  const handleOnDelete = (username: string) => {
+    setModal({
+      title: `Delete an user account`,
+      body: <DeleteUser username={username} />,
+      callback: () => async () => {
+        // TODO: Send to backend
+        console.log('Deleting user account', username);
       }
     });
     setIsOpen(true);

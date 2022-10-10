@@ -2,12 +2,12 @@ import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { message, Upload } from 'antd';
 import React from 'react';
+import { HomeContent } from '../common';
 
-const { Dragger } = Upload;
-
-const props: UploadProps = {
+const draggerProps: UploadProps = {
   name: 'file',
   multiple: true,
+  accept: 'csv',
   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
   onChange(info) {
     const { status } = info.file;
@@ -27,22 +27,22 @@ const props: UploadProps = {
 
 export const UploadFile: React.FC = () => {
   return (
-    <>
-      <div className="text-2xl font-medium">Upload File </div>
-      <div className="flex justify-center bg-white rounded-lg mt-8 p-10">
-        <div className="w-1/2">
-          <p className="text-xl text-center font-bold">Upload Users.csv here</p>
-          <Dragger height={280} style={{ background: '#F8FAFF' }} {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
+    <HomeContent title="Upload File">
+      <div className="flex justify-center bg-white rounded-lg p-10">
+        <div className="w-auto md:w-2/3">
+          <Upload.Dragger height={280} {...draggerProps}>
+            <p className="text-custom-blue-light">
+              <InboxOutlined className="text-3xl" />
             </p>
-            <p className="ant-upload-text font-medium">
+            <p className="lg:text-lg font-medium">
               Click or drag file to this area to upload
             </p>
-            <p className="ant-upload-hint">Supported formats: csv</p>
-          </Dragger>
+            <p className="lg:text-sm text-xs text-gray-400">
+              Supported formats: csv
+            </p>
+          </Upload.Dragger>
         </div>
       </div>
-    </>
+    </HomeContent>
   );
 };

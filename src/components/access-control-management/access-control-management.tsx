@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
+import { HomeContent } from '../common';
 import { data } from './data';
 import { ERoles, ERolesColor, EStatus, EStatusColor, IDataType } from './types';
 
@@ -11,6 +12,7 @@ const columns: ColumnsType<IDataType> = [
     title: 'User ID',
     dataIndex: 'userId',
     key: 'userId',
+    responsive: ['lg'],
     render: text => <a>{text}</a>,
     sorter: (a, b) => (a.userId > b.userId ? 1 : -1)
   },
@@ -24,17 +26,20 @@ const columns: ColumnsType<IDataType> = [
     title: 'Email',
     dataIndex: 'email',
     key: 'email',
+    responsive: ['lg'],
     sorter: (a, b) => (a.email > b.email ? 1 : -1)
   },
   {
     title: 'Last Updated',
     dataIndex: 'lastUpdated',
-    key: 'lastUpdated'
+    key: 'lastUpdated',
+    responsive: ['lg']
   },
   {
     title: 'Roles',
-    key: 'roles',
     dataIndex: 'roles',
+    key: 'roles',
+    responsive: ['md'],
     render: (_, { roles }) => (
       <>
         {roles.map(role => {
@@ -76,13 +81,7 @@ const columns: ColumnsType<IDataType> = [
     filterMode: 'tree',
     filterSearch: true,
     onFilter: (value, record) => {
-      let found = false;
-      record.roles.map(role => {
-        if (role == value) {
-          found = true;
-        }
-      });
-      return found;
+      return record.roles.some(role => role === value);
     }
   },
   {
@@ -91,6 +90,7 @@ const columns: ColumnsType<IDataType> = [
     dataIndex: 'status',
     render: (_, { status }) => {
       let color = '';
+
       switch (status) {
         case EStatus.ACTIVE:
           color = EStatusColor.ACTIVE;
@@ -129,28 +129,32 @@ const columns: ColumnsType<IDataType> = [
   {
     title: 'Action',
     key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
+    render: () => (
+      <div className="space-x-3">
         <EditOutlined style={{ color: '#5C73DB' }} />
         <DeleteOutlined style={{ color: '#DC2626' }} />
-      </Space>
+      </div>
     )
   }
 ];
 
 export const AccessControlManagement: React.FC = () => {
   const [search, setSearch] = useState('');
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   return (
-    <>
-      <div className="text-2xl font-medium">Access Control Management</div>
+    <HomeContent title="Access Control Management">
       <input
-        className="rounded-md border p-3 focus:border-custom-blue-light border-custom-blue-default mt-3 mb-10 w-full"
+        className="rounded-md border p-3 focus:border-custom-blue-light border-custom-blue-default mb-10 w-full"
         type="text"
         placeholder="Search..."
         value={search}
-        onChange={e => setSearch(e.target.value)}
+        onChange={handleOnChange}
       />
       <Table columns={columns} dataSource={data} />
-    </>
+    </HomeContent>
   );
 };

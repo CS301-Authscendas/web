@@ -1,44 +1,12 @@
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import React, { useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import React, { useState } from 'react';
+import { data } from './data';
+import { ERoles, ERolesColor, EStatus, EStatusColor, IDataType } from './types';
 
-interface DataType {
-  key: string;
-  userId: string;
-  name: string;
-  email: string;
-  lastUpdated: string;
-  roles: Roles[];
-  status: Status;
-}
-
-enum RolesColor {
-  ADMIN = 'geekblue',
-  NON_ADMIN = 'green',
-  OWNER = 'volcano'
-}
-
-enum Roles {
-  ADMIN = 'admin',
-  NON_ADMIN = 'non-admin',
-  OWNER = 'owner'
-}
-
-enum Status {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  PENDING = 'pending'
-}
-
-enum StatusColor {
-  ACTIVE = 'green',
-  INACTIVE = 'red',
-  PENDING = 'volcano'
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<IDataType> = [
   {
     title: 'User ID',
     dataIndex: 'userId',
@@ -72,14 +40,14 @@ const columns: ColumnsType<DataType> = [
         {roles.map(role => {
           let color = '';
           switch (role) {
-            case Roles.ADMIN:
-              color = RolesColor.ADMIN;
+            case ERoles.ADMIN:
+              color = ERolesColor.ADMIN;
               break;
-            case Roles.NON_ADMIN:
-              color = RolesColor.NON_ADMIN;
+            case ERoles.NON_ADMIN:
+              color = ERolesColor.NON_ADMIN;
               break;
-            case Roles.OWNER:
-              color = RolesColor.OWNER;
+            case ERoles.OWNER:
+              color = ERolesColor.OWNER;
               break;
           }
 
@@ -93,16 +61,16 @@ const columns: ColumnsType<DataType> = [
     ),
     filters: [
       {
-        text: Roles.ADMIN,
-        value: Roles.ADMIN
+        text: ERoles.ADMIN,
+        value: ERoles.ADMIN
       },
       {
-        text: Roles.NON_ADMIN,
-        value: Roles.NON_ADMIN
+        text: ERoles.NON_ADMIN,
+        value: ERoles.NON_ADMIN
       },
       {
-        text: Roles.OWNER,
-        value: Roles.OWNER
+        text: ERoles.OWNER,
+        value: ERoles.OWNER
       }
     ],
     filterMode: 'tree',
@@ -124,14 +92,14 @@ const columns: ColumnsType<DataType> = [
     render: (_, { status }) => {
       let color = '';
       switch (status) {
-        case Status.ACTIVE:
-          color = StatusColor.ACTIVE;
+        case EStatus.ACTIVE:
+          color = EStatusColor.ACTIVE;
           break;
-        case Status.INACTIVE:
-          color = StatusColor.INACTIVE;
+        case EStatus.INACTIVE:
+          color = EStatusColor.INACTIVE;
           break;
-        case Status.PENDING:
-          color = StatusColor.PENDING;
+        case EStatus.PENDING:
+          color = EStatusColor.PENDING;
           break;
       }
       return (
@@ -142,16 +110,16 @@ const columns: ColumnsType<DataType> = [
     },
     filters: [
       {
-        text: Status.ACTIVE,
-        value: Status.ACTIVE
+        text: EStatus.ACTIVE,
+        value: EStatus.ACTIVE
       },
       {
-        text: Status.INACTIVE,
-        value: Status.INACTIVE
+        text: EStatus.INACTIVE,
+        value: EStatus.INACTIVE
       },
       {
-        text: Status.PENDING,
-        value: Status.PENDING
+        text: EStatus.PENDING,
+        value: EStatus.PENDING
       }
     ],
     filterMode: 'tree',
@@ -167,45 +135,6 @@ const columns: ColumnsType<DataType> = [
         <DeleteOutlined style={{ color: '#DC2626' }} />
       </Space>
     )
-  }
-];
-
-const data: DataType[] = [
-  {
-    key: '1',
-    userId: 'aT3te0gmr3im9',
-    name: 'Amy',
-    email: 'amy.brown@gmail.com',
-    lastUpdated: '2021-10-14 12:02:33',
-    roles: [Roles.ADMIN, Roles.NON_ADMIN],
-    status: Status.INACTIVE
-  },
-  {
-    key: '2',
-    userId: 'cT3te0gmr3im9',
-    name: 'Bobby',
-    email: 'bobby.brown@gmail.com',
-    lastUpdated: '2021-10-14 12:02:33',
-    roles: [Roles.OWNER],
-    status: Status.ACTIVE
-  },
-  {
-    key: '3',
-    userId: 'bT3te0gmr3im9',
-    name: 'Dan',
-    email: 'dan.brown@gmail.com',
-    lastUpdated: '2021-10-14 12:02:33',
-    roles: [Roles.ADMIN, Roles.OWNER],
-    status: Status.PENDING
-  },
-  {
-    key: '4',
-    userId: 'dT3te0gmr3im9',
-    name: 'Cathy',
-    email: 'cathy.brown@gmail.com',
-    lastUpdated: '2021-10-14 12:02:33',
-    roles: [Roles.NON_ADMIN],
-    status: Status.ACTIVE
   }
 ];
 

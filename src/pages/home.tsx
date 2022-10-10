@@ -1,91 +1,50 @@
 import type { NextPage } from 'next';
 
+import { Layout } from 'antd';
+import { useState } from 'react';
 import {
-  CloudUploadOutlined,
-  SafetyOutlined,
-  GiftOutlined
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-
-import { Layout, Menu } from 'antd';
-import React, { useState } from 'react';
-import { Header } from 'antd/lib/layout/layout';
-import { AccessControlManagement } from '../components/accessControlManagement';
-import { UploadFile } from '../components/uploadFile';
-
-const { Content, Sider } = Layout;
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label
-  } as MenuItem;
-}
-
-enum Labels {
-  ACCESS_CONTROL = 'ACCESS_CONTROL',
-  UPLOAD_FILE = 'UPLOAD_FILE',
-  REWARDS = 'REWARDS'
-}
-
-const items: MenuProps['items'] = [
-  getItem('Access control', Labels.ACCESS_CONTROL, <SafetyOutlined />),
-  getItem('Upload-file', Labels.UPLOAD_FILE, <CloudUploadOutlined />),
-  getItem('Rewards', Labels.REWARDS, <GiftOutlined />)
-];
+  AccessControlManagement,
+  ELabels,
+  SideBar,
+  TMenuHandleOnClick,
+  UploadFile
+} from '../components';
 
 const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [tab, setTab] = useState<Labels>(Labels.ACCESS_CONTROL);
+  const [tab, setTab] = useState<ELabels>(ELabels.ACCESS_CONTROL);
 
-  const onClick: MenuProps['onClick'] = e => {
-    const key = Labels[e.key as keyof typeof Labels];
-    console.log(key);
+  const handleOnClick: TMenuHandleOnClick = e => {
+    const key = ELabels[e.key as keyof typeof ELabels];
     setTab(key);
   };
 
+  const handleOnCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const renderMenuItem = () => {
+    switch (tab) {
+      case ELabels.ACCESS_CONTROL:
+        return <AccessControlManagement />;
+      case ELabels.UPLOAD_FILE:
+        return <UploadFile />;
+      case ELabels.REWARDS:
+        return <div className="text-2xl font-medium">Rewards</div>;
+    }
+  };
+
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        collapsible
+    <Layout className="h-screen">
+      <SideBar
         collapsed={collapsed}
-        onCollapse={value => setCollapsed(value)}
-      >
-        <div className="logo" />
-        <Menu
-          onClick={onClick}
-          theme="dark"
-          defaultSelectedKeys={[Labels.ACCESS_CONTROL]}
-          mode="inline"
-          items={items}
-        />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          className="site-layout-background"
-          style={{ padding: 0, background: 'white' }}
-        />
-        <Content style={{ margin: '0 16px' }}>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            {tab === Labels.ACCESS_CONTROL && <AccessControlManagement />}
-            {tab === Labels.UPLOAD_FILE && <UploadFile />}
-            {tab === Labels.REWARDS && (
-              <div className="text-2xl font-medium">Rewards</div>
-            )}
-          </div>
-        </Content>
+        handleOnClick={handleOnClick}
+        handleOnCollapsed={handleOnCollapsed}
+      />
+      <Layout>
+        <Layout.Content className="p-10 min-h-[360px] bg-custom-white-dark">
+          {renderMenuItem()}
+        </Layout.Content>
       </Layout>
     </Layout>
   );

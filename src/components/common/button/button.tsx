@@ -2,13 +2,15 @@ import classnames from 'classnames';
 
 interface IButtonProps {
   onSubmit?: () => void;
+  width?: string;
   text: string;
   isDisabled?: boolean;
 }
 
-export const Button = ({ onSubmit, text, isDisabled }: IButtonProps) => {
+export const Button = ({ onSubmit, width, text, isDisabled }: IButtonProps) => {
+  console.log(width);
   const buttonStyle = classnames({
-    'flex w-full h-10 items-center justify-center rounded-md bg-custom-blue-light cursor-pointer':
+    'flex h-10 items-center justify-center rounded-md bg-custom-blue-light cursor-pointer':
       true,
     'cursor-not-allowed bg-custom-blue-lighter': isDisabled
   });
@@ -22,7 +24,10 @@ export const Button = ({ onSubmit, text, isDisabled }: IButtonProps) => {
   };
 
   return (
-    <div className={buttonStyle} onClick={handleOnSubmit}>
+    <div
+      className={buttonStyle + ' ' + (width ? width : 'w-full')}
+      onClick={handleOnSubmit}
+    >
       <div className="text-white">{text}</div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
-import { Logo } from '../logo';
+import { ColorScheme, Logo } from '../logo';
 import { items } from './data';
 import { ELabels, TMenuHandleOnClick } from './types';
 
@@ -28,7 +28,7 @@ export const SideBar = ({
       onCollapse={handleOnCollapsed}
     >
       <div className="p-5 mb-3 border-b border-b-gray-700">
-        <Logo renderText={false} />
+        <Logo renderText={false} colorScheme={ColorScheme.DARK} />
       </div>
       <Menu
         onClick={handleOnClick}

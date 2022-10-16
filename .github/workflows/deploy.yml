@@ -23,7 +23,9 @@ jobs:
           cache: "yarn"
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn install
+          yarn build
 
   deploy:
     name: Deploy to ECS

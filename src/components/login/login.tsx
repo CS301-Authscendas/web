@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
+import { AuthService } from '../../services';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
@@ -75,11 +76,12 @@ export const Login: React.FC = () => {
       <hr />
       <div className="text-center">
         <span>Have QA credentials? </span>
-        <Link href="/register">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
-            Sign in with SSO
-          </a>
-        </Link>
+        <a
+          className="text-custom-blue-light visited:text-custom-blue-lighter underline"
+          href={AuthService.ssoLoginRedirect()}
+        >
+          Sign in with SSO
+        </a>
       </div>
     </div>
   );

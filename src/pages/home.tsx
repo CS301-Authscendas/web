@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 
 import { Layout } from 'antd';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import {
   AccessControlManagement,
   ELabels,
@@ -13,6 +14,13 @@ import {
 const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [tab, setTab] = useState<ELabels>(ELabels.ACCESS_CONTROL);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const { code } = router.query;
+    }
+  }, [router.isReady]);
 
   const handleOnClick: TMenuHandleOnClick = e => {
     const key = ELabels[e.key as keyof typeof ELabels];

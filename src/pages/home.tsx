@@ -10,16 +10,22 @@ import {
   TMenuHandleOnClick,
   UploadFile
 } from '../components';
+import { useAuth } from '../providers';
 
 const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [tab, setTab] = useState<ELabels>(ELabels.ACCESS_CONTROL);
   const router = useRouter();
+  const { setSsoCode, setIsLoading } = useAuth();
 
   useEffect(() => {
     if (router.isReady) {
       const { code } = router.query;
+      console.log('--- SSO Login: ', code);
+      setSsoCode(code as string);
+      setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   const handleOnClick: TMenuHandleOnClick = e => {

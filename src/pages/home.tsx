@@ -16,14 +16,21 @@ const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [tab, setTab] = useState<ELabels>(ELabels.ACCESS_CONTROL);
   const router = useRouter();
-  const { setSsoCode, setIsLoading } = useAuth();
+  const { setSsoAccessToken, setIsLoading } = useAuth();
 
   useEffect(() => {
     if (router.isReady) {
-      const { code } = router.query;
-      console.log('--- SSO Login: ', code);
-      setSsoCode(code as string);
+      const { jwtToken } = router.query;
+
+      if (!jwtToken) {
+        return;
+      }
+
+      console.log('--- SSO Login: ', jwtToken);
+      setSsoAccessToken(jwtToken as string);
       setIsLoading(false);
+
+      router.replace('/home', undefined, { shallow: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);

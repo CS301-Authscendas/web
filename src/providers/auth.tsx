@@ -10,10 +10,8 @@ import {
 
 interface IAuthContext {
   getAccessToken: () => string;
-  ssoCode: string;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  setSsoCode: Dispatch<SetStateAction<string>>;
   setSsoAccessToken: Dispatch<SetStateAction<string>>;
   setHostedAccessToken: Dispatch<SetStateAction<string>>;
   logout: () => void;
@@ -26,10 +24,8 @@ interface IProps {
 
 const AuthContext = createContext<IAuthContext>({
   getAccessToken: () => '',
-  ssoCode: '',
   isLoading: false,
   setIsLoading: () => {},
-  setSsoCode: () => {},
   setSsoAccessToken: () => {},
   setHostedAccessToken: () => {},
   logout: () => {},
@@ -37,7 +33,6 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
-  const [ssoCode, setSsoCode] = useState<string>('');
   const [ssoAccessToken, setSsoAccessToken] = useState<string>('');
   const [hostedAccessToken, setHostedAccessToken] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,17 +40,18 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading || ssoCode || ssoAccessToken || hostedAccessToken) {
+    if (isLoading || ssoAccessToken || hostedAccessToken) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-  }, [ssoCode, ssoAccessToken, hostedAccessToken, isLoading]);
+  }, [ssoAccessToken, hostedAccessToken, isLoading]);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
       logout();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isLoggedIn]);
 
   const getAccessToken = (): string => {
@@ -63,7 +59,6 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   };
 
   const resetAllToken = (): void => {
-    setSsoCode('');
     setSsoAccessToken('');
     setHostedAccessToken('');
   };
@@ -77,10 +72,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     <AuthContext.Provider
       value={{
         getAccessToken,
-        ssoCode,
         isLoading,
         setIsLoading,
-        setSsoCode,
         setSsoAccessToken,
         setHostedAccessToken,
         logout,

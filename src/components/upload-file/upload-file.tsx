@@ -8,7 +8,14 @@ const draggerProps: UploadProps = {
   name: 'file',
   multiple: true,
   accept: 'csv',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  data: file => {
+    return {
+      ...file,
+      file_name: 'MyBank' // TODO
+    };
+  },
+  action:
+    'https://a7c6nds77sgkzgs22ldndv2jxm0wzbeh.lambda-url.us-east-1.on.aws/',
   onChange(info) {
     const { status } = info.file;
     if (status !== 'uploading') {

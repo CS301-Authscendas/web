@@ -66,15 +66,6 @@ export const Login: React.FC = () => {
       </div>
       <Button onSubmit={handleOnSubmit} text="Login" isDisabled={isDisabled} />
       <div className="text-center">
-        <span>Don&apos;t have an account yet? </span>
-        <Link href="/register">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
-            Register
-          </a>
-        </Link>
-      </div>
-      <hr />
-      <div className="text-center">
         <span>Have QA credentials? </span>
         <a
           className="text-custom-blue-light visited:text-custom-blue-lighter underline"

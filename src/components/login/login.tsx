@@ -1,10 +1,15 @@
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
 import { AuthService } from '../../services';
+import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
+  const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -31,7 +36,29 @@ export const Login: React.FC = () => {
   }, [email, password]);
 
   const handleOnSubmit = () => {
-    console.log(email, password);
+    axios
+      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/login`, {
+        email,
+        password
+      })
+      .then(response => {
+        if (response.status == 201) {
+          router.push(
+            {
+              pathname: '/2fa',
+              query: { email: email }
+            },
+            '/2fa'
+          );
+        }
+      })
+      .catch(err => {
+        openNotification(
+          'top',
+          'Log in unsuccessful',
+          'Please check your email and password.'
+        );
+      });
   };
 
   return (

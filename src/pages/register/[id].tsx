@@ -30,7 +30,7 @@ const RegisterPage: NextPage = ({ data }: any) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_REGISTER_URL}/${context.params?.id}`
+    `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/user-signup-status/${context.params?.id}`
   );
 
   return {

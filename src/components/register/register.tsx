@@ -68,7 +68,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
 
   const handleOnSubmit = async () => {
     await axios
-      .post(`${process.env.NEXT_PUBLIC_SIGNUP_URL}`, {
+      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/signup`, {
         email,
         firstName,
         lastName,

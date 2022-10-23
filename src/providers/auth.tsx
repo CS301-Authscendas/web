@@ -9,6 +9,8 @@ import {
 } from 'react';
 
 interface IAuthContext {
+  ssoAccessToken: string;
+  hostedAccessToken: string;
   getAccessToken: () => string;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -23,6 +25,8 @@ interface IProps {
 }
 
 const AuthContext = createContext<IAuthContext>({
+  ssoAccessToken: '',
+  hostedAccessToken: '',
   getAccessToken: () => '',
   isLoading: false,
   setIsLoading: () => {},
@@ -71,6 +75,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   return (
     <AuthContext.Provider
       value={{
+        ssoAccessToken,
+        hostedAccessToken,
         getAccessToken,
         isLoading,
         setIsLoading,

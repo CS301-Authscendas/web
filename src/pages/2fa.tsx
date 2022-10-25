@@ -23,8 +23,8 @@ const TwoFAPage: NextPage = () => {
   const handleSubmit = () => {
     axios
       .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/validate-2fa-token`, {
-        email: email,
-        token: token
+        email,
+        token
       })
       .then(response => {
         console.log(response.status);
@@ -61,10 +61,7 @@ const TwoFAPage: NextPage = () => {
           containerClassName="p-5"
           inputClassName="h-10 w-10 text-uppercase text-center text-2xl text-custom-blue-default border border-custom-blue-light rounded-lg mr-3"
         />
-        {/* <div className="text-center mb-5 text-custom-blue-default text-2xl tracking-widest underline underline-offset-8">
-          {token}
-        </div> */}
-        <Button width="w-1/3" text="Submit" onSubmit={() => handleSubmit()} />
+        <Button width="w-1/3" text="Submit" onSubmit={handleSubmit} />
       </div>
     </div>
   );

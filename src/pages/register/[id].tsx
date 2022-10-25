@@ -1,11 +1,13 @@
-import type { NextPage } from 'next';
+import type { InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Logo, Register } from '../../components';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { openNotification } from '../../utils/utils';
 
-const RegisterPage: NextPage = ({ data }: any) => {
+const RegisterPage: NextPage = ({
+  data
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
 
   useEffect(() => {

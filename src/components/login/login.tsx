@@ -10,9 +10,9 @@ import { Button } from '../common/button';
 export const Login: React.FC = () => {
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {

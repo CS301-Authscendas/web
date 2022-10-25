@@ -6,8 +6,8 @@ export const openNotification = (
   description: string
 ) => {
   notification.info({
-    message: `${message}`,
-    description: `${description}`,
+    message,
+    description,
     placement
   });
 };

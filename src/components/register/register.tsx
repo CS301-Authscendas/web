@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import validator from 'validator';
+import axios from 'axios';
 import { Button } from '../common';
+import { useRouter } from 'next/router';
+import { openNotification } from '../../utils/utils';
 
 interface IRegisterPayload {
   email: string;
@@ -12,8 +14,9 @@ interface IRegisterPayload {
   agreeTNC: boolean;
 }
 
-export const Register: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
+export const Register: React.FC<{ email: string }> = ({ email }) => {
+  const router = useRouter();
+
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -28,12 +31,6 @@ export const Register: React.FC = () => {
     const value = event.target.value;
 
     switch (key) {
-      case 'email':
-        setEmail(value);
-        if (!validator.isEmail(value)) {
-          setErrorMessage('Invalid email address');
-        }
-        break;
       case 'firstName':
         setFirstName(value);
         break;
@@ -69,7 +66,28 @@ export const Register: React.FC = () => {
     );
   }, [email, firstName, lastName, phoneNumber, birthDate, password, agreeTNC]);
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/signup`, {
+        email,
+        firstName,
+        lastName,
+        phoneNumber,
+        birthDate,
+        password
+      })
+      .then(response => {
+        console.log(response);
+        response.status === 201 && router.push('/login');
+        let message =
+          response.status === 201
+            ? 'You have successfully registered!'
+            : 'Register fail';
+
+        let title = response.status === 201 ? 'Success' : 'Error';
+
+        openNotification('top', title, message);
+      });
     console.log(
       email,
       firstName,
@@ -90,7 +108,7 @@ export const Register: React.FC = () => {
           name="email"
           type="text"
           value={email}
-          onChange={handleOnChange}
+          disabled
         />
       </div>
       <div className="flex w-full space-x-5">

@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
+import LoginPage from './login';
 
 const Home: NextPage = () => {
-  return <div>Welcome to Authcendas</div>;
+  return <LoginPage />;
 };
 
 export default Home;

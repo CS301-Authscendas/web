@@ -1,13 +1,18 @@
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
 import { AuthService } from '../../services';
+import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const router = useRouter();
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +36,29 @@ export const Login: React.FC = () => {
   }, [email, password]);
 
   const handleOnSubmit = () => {
-    console.log(email, password);
+    axios
+      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/login`, {
+        email,
+        password
+      })
+      .then(response => {
+        if (response.status == 201) {
+          router.push(
+            {
+              pathname: '/2fa',
+              query: { email: email }
+            },
+            '/2fa'
+          );
+        }
+      })
+      .catch(err => {
+        openNotification(
+          'top',
+          'Log in unsuccessful',
+          'Please check your email and password.'
+        );
+      });
   };
 
   return (
@@ -65,15 +92,6 @@ export const Login: React.FC = () => {
         </Link>
       </div>
       <Button onSubmit={handleOnSubmit} text="Login" isDisabled={isDisabled} />
-      <div className="text-center">
-        <span>Don&apos;t have an account yet? </span>
-        <Link href="/register">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
-            Register
-          </a>
-        </Link>
-      </div>
-      <hr />
       <div className="text-center">
         <span>Have QA credentials? </span>
         <a

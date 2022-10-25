@@ -11,6 +11,7 @@ import {
   UploadFile
 } from '../components';
 import { useAuth } from '../providers';
+import { Rewards } from '../components/rewards';
 
 const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -51,7 +52,7 @@ const Home: NextPage = () => {
       case ELabels.UPLOAD_FILE:
         return <UploadFile />;
       case ELabels.REWARDS:
-        return <div className="text-2xl font-medium">Rewards</div>;
+        return <Rewards />;
     }
   };
 

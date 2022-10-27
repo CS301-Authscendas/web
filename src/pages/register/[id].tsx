@@ -4,6 +4,7 @@ import { Logo, Register } from '../../components';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { openNotification } from '../../utils/utils';
+import { AUTH_ENDPOINTS } from '../../consts/consts';
 
 const RegisterPage: NextPage = ({
   data
@@ -32,7 +33,7 @@ const RegisterPage: NextPage = ({
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/user-signup-status/${context.params?.id}`
+    `${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.USER_SIGNUP_STATUS}/${context.params?.id}`
   );
 
   return {

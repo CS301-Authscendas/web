@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
+import { AUTH_ENDPOINTS } from '../../consts/consts';
 import { AuthService } from '../../services';
 import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
@@ -37,7 +38,7 @@ export const Login: React.FC = () => {
 
   const handleOnSubmit = () => {
     axios
-      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/login`, {
+      .post(`${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.LOGIN}`, {
         email,
         password
       })

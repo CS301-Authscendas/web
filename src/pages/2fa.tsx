@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
+import { AUTH_ENDPOINTS } from '../consts/consts';
 import { openNotification } from '../utils/utils';
 
 const TwoFAPage: NextPage = () => {
@@ -22,10 +23,13 @@ const TwoFAPage: NextPage = () => {
 
   const handleSubmit = () => {
     axios
-      .post(`${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/validate-2fa-token`, {
-        email,
-        token
-      })
+      .post(
+        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.VALIDATE_2FA}`,
+        {
+          email,
+          token
+        }
+      )
       .then(response => {
         console.log(response.status);
         if (response.status == 201) {

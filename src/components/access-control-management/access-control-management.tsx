@@ -21,6 +21,10 @@ export const AccessControlManagement: React.FC = () => {
   const { jwtToken } = useAuth();
 
   useEffect(() => {
+    if (!jwtToken) {
+      return;
+    }
+
     axios
       .get(
         `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
@@ -34,7 +38,7 @@ export const AccessControlManagement: React.FC = () => {
       .catch(err => {
         openNotification('top', 'User list retrieval unsuccessful');
       });
-  }, []);
+  }, [jwtToken]);
 
   const columns: ColumnsType<IDataType> = [
     {

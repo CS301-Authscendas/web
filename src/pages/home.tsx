@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-
 import { Layout } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -19,19 +18,19 @@ const Home: NextPage = () => {
   const { jwtToken, logout } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.isReady) {
-      // const { jwtToken } = router.query;
-      if (!jwtToken) {
-        return;
-      }
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     // const { jwtToken } = router.query;
+  //     if (!jwtToken) {
+  //       return;
+  //     }
 
-      //   console.log('--- SSO Login: ', jwtToken);
-      //   setSsoAccessToken(jwtToken as string);
-      //   setIsLoading(false);
-      router.replace('/home', undefined, { shallow: true });
-    }
-  }, [router.isReady]);
+  //     //   console.log('--- SSO Login: ', jwtToken);
+  //     //   setSsoAccessToken(jwtToken as string);
+  //     //   setIsLoading(false);
+  //     router.replace('/home', undefined, { shallow: true });
+  //   }
+  // }, [router.isReady]);
 
   const handleOnClick: TMenuHandleOnClick = e => {
     const key = ELabels[e.key as keyof typeof ELabels];

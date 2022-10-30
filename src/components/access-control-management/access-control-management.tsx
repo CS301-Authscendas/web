@@ -44,6 +44,7 @@ export const AccessControlManagement: React.FC = () => {
           }
         }
       );
+      console.log(res.data);
       setData(res.data);
     } catch (e) {
       openNotification('top', 'User list retrieval unsuccessful');
@@ -113,30 +114,28 @@ export const AccessControlManagement: React.FC = () => {
       width: 150,
       render: (_, { roles }) => (
         <>
-          {roles
-            .filter((role: RoleObj) => role.organizationId === 'MyBank')
-            .map((role: RoleObj) => {
-              let color = '';
-              switch (role.permission) {
-                case Role.USER:
-                  color = RoleColor.USER;
-                  break;
-                case Role.ADMIN_READ:
-                  color = RoleColor['ADMIN-READ'];
-                  break;
-                case Role.ADMIN_WRITE:
-                  color = RoleColor['ADMIN-WRITE'];
-                  break;
-                case Role.ADMIN_DELETE:
-                  color = RoleColor['ADMIN-DELETE'];
-                  break;
-              }
-              return (
-                <Tag color={color} key={role.organizationId}>
-                  {role.permission}
-                </Tag>
-              );
-            })}
+          {roles[0].permission.map((role: Role) => {
+            let color = '';
+            switch (role) {
+              case Role.USER:
+                color = RoleColor.USER;
+                break;
+              case Role.ADMIN_READ:
+                color = RoleColor['ADMIN-READ'];
+                break;
+              case Role.ADMIN_WRITE:
+                color = RoleColor['ADMIN-WRITE'];
+                break;
+              case Role.ADMIN_DELETE:
+                color = RoleColor['ADMIN-DELETE'];
+                break;
+            }
+            return (
+              <Tag color={color} key={role}>
+                {role}
+              </Tag>
+            );
+          })}
         </>
       ),
       filters: [
@@ -160,9 +159,7 @@ export const AccessControlManagement: React.FC = () => {
       filterMode: 'tree',
       filterSearch: true,
       onFilter: (value, record) => {
-        return record.roles.some(
-          role => role.permission === value && role.organizationId === 'MyBank'
-        );
+        return record.roles[0].permission.includes(value as Role);
       }
     },
     {

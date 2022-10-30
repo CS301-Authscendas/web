@@ -2,11 +2,7 @@ import { NextPage } from 'next';
 import { Organisation } from '../components/organisation/organisations';
 
 const OrganisationPage: NextPage = () => {
-  return (
-    <>
-      <Organisation />
-    </>
-  );
+  return <Organisation />;
 };
 
 export default OrganisationPage;

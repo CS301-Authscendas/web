@@ -14,5 +14,6 @@ export const USER_ENDPOINTS = {
   GET_BY_ID: '/user/id',
   GET_USERS_FROM_ORG: '/user/org',
   GET_FULL_USER_DETAILS: '/user/full',
-  FETCH_ORGANIZATIONS: '/user/fetch-organizations'
+  FETCH_ORGANIZATIONS: '/user/fetch-organizations',
+  FETCH_USERS_LIST: '/user/fetch-users-list'
 };

@@ -18,13 +18,12 @@ interface IUser {
 }
 
 export const useUser = () => {
-  const { ssoAccessToken, hostedAccessToken } = useAuth();
-  const [accessToken, setAccessToken] = useState<string>('');
+  const { jwtToken } = useAuth();
   const [userData, setUserData] = useState<IUser>();
 
   const fetcher = (url: string) =>
     axiosInstance
-      .get(url, { headers: { Authorization: 'Bearer ' + accessToken ?? '' } })
+      .get(url, { headers: { Authorization: 'Bearer ' + jwtToken ?? '' } })
       .then(res => res.data);
 
   const { data, error } = useSWR<IUser>('/', fetcher, {
@@ -33,14 +32,6 @@ export const useUser = () => {
     revalidateOnReconnect: true,
     refreshInterval: 0
   });
-
-  useEffect(() => {
-    const localAccessToken = hostedAccessToken || ssoAccessToken;
-
-    if (localAccessToken) {
-      setAccessToken(localAccessToken);
-    }
-  }, [ssoAccessToken, hostedAccessToken]);
 
   useEffect(() => {
     if (!error && data) {

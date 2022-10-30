@@ -9,15 +9,12 @@ import {
 } from 'react';
 
 interface IAuthContext {
-  ssoAccessToken: string;
-  hostedAccessToken: string;
-  getAccessToken: () => string;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  setSsoAccessToken: Dispatch<SetStateAction<string>>;
-  setHostedAccessToken: Dispatch<SetStateAction<string>>;
   logout: () => void;
   isLoggedIn: boolean;
+  jwtToken: string;
+  setJwtToken: Dispatch<SetStateAction<string>>;
 }
 
 interface IProps {
@@ -25,65 +22,48 @@ interface IProps {
 }
 
 const AuthContext = createContext<IAuthContext>({
-  ssoAccessToken: '',
-  hostedAccessToken: '',
-  getAccessToken: () => '',
   isLoading: false,
   setIsLoading: () => {},
-  setSsoAccessToken: () => {},
-  setHostedAccessToken: () => {},
   logout: () => {},
-  isLoggedIn: false
+  isLoggedIn: false,
+  jwtToken: '',
+  setJwtToken: () => {}
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
-  const [ssoAccessToken, setSsoAccessToken] = useState<string>('');
-  const [hostedAccessToken, setHostedAccessToken] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [jwtToken, setJwtToken] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading || ssoAccessToken || hostedAccessToken) {
+    if (isLoading) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-  }, [ssoAccessToken, hostedAccessToken, isLoading]);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
       logout();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isLoggedIn]);
 
-  const getAccessToken = (): string => {
-    return ssoAccessToken || hostedAccessToken;
-  };
-
-  const resetAllToken = (): void => {
-    setSsoAccessToken('');
-    setHostedAccessToken('');
-  };
-
   const logout = () => {
-    resetAllToken();
+    setJwtToken('');
     router.push('/login');
   };
 
   return (
     <AuthContext.Provider
       value={{
-        ssoAccessToken,
-        hostedAccessToken,
-        getAccessToken,
         isLoading,
         setIsLoading,
-        setSsoAccessToken,
-        setHostedAccessToken,
         logout,
-        isLoggedIn
+        isLoggedIn,
+        jwtToken,
+        setJwtToken
       }}
     >
       {children}

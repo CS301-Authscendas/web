@@ -37,6 +37,13 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (localStorage.getItem('jwtToken')) {
+      const jwt = localStorage.getItem('jwtToken');
+      setJwtToken(jwt!);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isLoading) {
       setIsLoggedIn(true);
     } else {
@@ -52,6 +59,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
 
   const logout = () => {
     setJwtToken('');
+    localStorage.removeItem('jwtToken');
     router.push('/login');
   };
 

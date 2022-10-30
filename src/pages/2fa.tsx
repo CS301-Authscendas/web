@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
-import { AUTH_ENDPOINTS } from '../consts/consts';
+import { AUTH_ENDPOINTS } from '../consts';
 import { useAuth } from '../providers';
 import { openNotification } from '../utils/utils';
 

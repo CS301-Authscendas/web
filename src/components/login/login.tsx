@@ -3,13 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import validator from 'validator';
-import { AUTH_ENDPOINTS } from '../../consts/consts';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../../consts';
 import { AuthService } from '../../services';
 import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
-  console.log(process.env);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>('');
@@ -39,7 +38,7 @@ export const Login: React.FC = () => {
 
   const handleOnSubmit = () => {
     axios
-      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.LOGIN}`, {
+      .post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.LOGIN}`, {
         email,
         password
       })

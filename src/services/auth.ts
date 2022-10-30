@@ -1,14 +1,8 @@
-import { AUTH_ENDPOINTS } from '../consts/consts';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../consts';
 
 export const AuthService = {
   ssoLoginRedirect: (): string | undefined => {
-    const backendUrl = process.env.GATEWAY_URL;
-    const bankSsoUrl = `${backendUrl}${AUTH_ENDPOINTS.SSO_LOGIN}`;
-
-    console.log(backendUrl);
-    if (!backendUrl) {
-      return;
-    }
+    const bankSsoUrl = `${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.SSO_LOGIN}`;
 
     const redirectUrl =
       process.env.NODE_ENV === 'production'

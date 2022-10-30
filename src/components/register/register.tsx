@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { AUTH_ENDPOINTS } from '../../consts/consts';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../../consts';
 import { openNotification } from '../../utils/utils';
 import { Button } from '../common';
 
@@ -69,7 +69,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
 
   const handleOnSubmit = async () => {
     await axios
-      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.SIGNUP}`, {
+      .post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.SIGNUP}`, {
         email,
         firstName,
         lastName,

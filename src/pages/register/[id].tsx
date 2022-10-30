@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Logo, Register } from '../../components';
-import { AUTH_ENDPOINTS } from '../../consts/consts';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../../consts';
 import { openNotification } from '../../utils/utils';
 
 const RegisterPage: NextPage = ({
@@ -33,7 +33,7 @@ const RegisterPage: NextPage = ({
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch(
-    `${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.USER_SIGNUP_STATUS}/${context.params?.id}`
+    `${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.USER_SIGNUP_STATUS}/${context.params?.id}`
   );
 
   return {

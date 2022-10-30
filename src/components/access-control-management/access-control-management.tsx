@@ -5,7 +5,7 @@ import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { USER_ENDPOINTS } from '../../consts/consts';
+import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
 import { useAuth, useModal } from '../../providers';
 import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
@@ -34,7 +34,7 @@ export const AccessControlManagement: React.FC = () => {
   const fetchUserList = async () => {
     try {
       const res = await axios.get(
-        `${process.env.GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
+        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
         {
           headers: { Authorization: `Bearer ${jwtToken}` }
         }

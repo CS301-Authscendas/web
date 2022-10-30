@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { USER_ENDPOINTS } from '../../consts/consts';
+import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
 import { useAuth } from '../../providers';
 import { Role, RoleObj } from '../access-control-management/types';
 import { OrganisationCard } from '../common/organisation-card';
@@ -11,7 +11,7 @@ export const Organisation: React.FC = () => {
 
   const fetchUserDetails = async () => {
     const resp = await axios.get(
-      `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.GET_USER}`,
+      `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.GET_USER}`,
       {
         headers: { Authorization: `Bearer ${jwtToken}` }
       }

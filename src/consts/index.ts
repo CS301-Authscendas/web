@@ -18,3 +18,10 @@ export const USER_ENDPOINTS = {
   FETCH_USERS_LIST: '/user/fetch-users-list',
   GET_USER: '/user'
 };
+
+export const ENDPOINTS = {
+  FILE_UPLOAD:
+    'https://ix727qsigbfpryscilarebnks40pveep.lambda-url.us-east-1.on.aws/',
+  GATEWAY:
+    'http://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
+};

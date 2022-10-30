@@ -38,7 +38,7 @@ const TwoFAPage: NextPage = () => {
         if (res.status == 201) {
           setJwtToken(res.data.token);
           localStorage.setItem('jwtToken', res.data.token);
-          router.push('/home');
+          router.push('/organisations');
         }
       })
       .catch(err => {

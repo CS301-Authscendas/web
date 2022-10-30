@@ -3,17 +3,27 @@ import useSWR from 'swr';
 import axiosInstance from '../axios';
 import { useAuth } from '../providers';
 
+enum Permission {
+  USER = 'user',
+  ADMIN_READ = 'admin-read',
+  ADMIN_WRITE = 'admin-write',
+  ADMIN_DELETE = 'admin-delete'
+}
+
+interface Role {
+  organizationId: string;
+  permission: Permission;
+}
+
 interface IUser {
   id: string;
-  organizationId: string[];
+  phoneNumber: string | null;
   email: string;
   firstName: string;
   lastName: string;
   status: string;
   birthDate: string;
-  twoFATokenSecret: string | null;
-  role: string;
-  phoneNumber: string | null;
+  role: Role[];
   updatedAt: number;
 }
 

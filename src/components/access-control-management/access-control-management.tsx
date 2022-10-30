@@ -96,13 +96,13 @@ export const AccessControlManagement: React.FC = () => {
                 color = RoleColor.USER;
                 break;
               case Role.ADMIN_READ:
-                color = RoleColor.ADMIN_READ;
+                color = RoleColor['ADMIN-READ'];
                 break;
               case Role.ADMIN_WRITE:
-                color = RoleColor.ADMIN_WRITE;
+                color = RoleColor['ADMIN-WRITE'];
                 break;
               case Role.ADMIN_DELETE:
-                color = RoleColor.ADMIN_DELETE;
+                color = RoleColor['ADMIN-DELETE'];
                 break;
             }
             return (

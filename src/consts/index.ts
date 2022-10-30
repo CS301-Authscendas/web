@@ -16,12 +16,15 @@ export const USER_ENDPOINTS = {
   GET_FULL_USER_DETAILS: '/user/full',
   FETCH_ORGANIZATIONS: '/user/fetch-organizations',
   FETCH_USERS_LIST: '/user/fetch/users-list',
-  GET_USER: '/user'
+  GET_USER: '/user',
+  EDIT_USER_DETAILS: '/user/edit-user-details'
 };
 
 export const ENDPOINTS = {
   FILE_UPLOAD:
     'https://ix727qsigbfpryscilarebnks40pveep.lambda-url.us-east-1.on.aws/',
   GATEWAY:
-    'http://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
+    process.env.NODE_ENV === 'production'
+      ? 'http://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
+      : 'http://localhost:3000/api'
 };

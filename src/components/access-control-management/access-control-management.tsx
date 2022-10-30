@@ -11,14 +11,7 @@ import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
-import {
-  IDataType,
-  Role,
-  RoleColor,
-  RoleObj,
-  Status,
-  StatusColor
-} from './types';
+import { IDataType, Role, RoleColor, Status, StatusColor } from './types';
 
 var utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
@@ -44,7 +37,6 @@ export const AccessControlManagement: React.FC = () => {
           }
         }
       );
-      console.log(res.data);
       setData(res.data);
     } catch (e) {
       openNotification('top', 'User list retrieval unsuccessful');
@@ -52,10 +44,33 @@ export const AccessControlManagement: React.FC = () => {
     setLoading(false);
   };
 
+  const editUser = async (values: any) => {
+    try {
+      await axios.put(
+        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
+        {
+          ...values,
+          roles: { organizationId: 'MyBank', permission: values.roles }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'organization-id': 'MyBank',
+            'login-method': 'HOSTED'
+          }
+        }
+      );
+      openNotification('top', 'Successful update');
+      await fetchUserList();
+    } catch (e) {
+      openNotification('top', 'Update user unsuccessful');
+    }
+  };
+
   const deleteUser = async (email: string) => {
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.GET_USER}/${email}`,
+        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.GET_USER}/${email}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -223,10 +238,7 @@ export const AccessControlManagement: React.FC = () => {
     setModal({
       title: `Edit details for ${record.firstName} ${record.lastName}`,
       body: <EditDetails {...record} form={form} />,
-      callback: () => async () => {
-        // TODO: Send to backend
-        console.log('Updating user account', form.getFieldsValue());
-      }
+      callback: () => async () => editUser(form.getFieldsValue())
     });
     setIsOpen(true);
   };

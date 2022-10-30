@@ -77,6 +77,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
         onOk={handleOnSubmit}
         onCancel={handleOnCancel}
         okButtonProps={{ ghost: true, loading }}
+        destroyOnClose
       >
         {body}
       </Modal>

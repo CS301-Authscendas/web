@@ -44,18 +44,10 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
   };
 
   const handleOnSubmit = async () => {
-    try {
-      setLoading(true);
-      if (callback) {
-        await callback();
-        setIsOpen(false);
-      }
-    } catch (error) {
-      console.log('error in modal submit');
-    } finally {
-      setLoading(false);
-      closeModal();
-    }
+    setLoading(true);
+    await callback?.();
+    setLoading(false);
+    closeModal();
   };
 
   const handleOnCancel = () => {

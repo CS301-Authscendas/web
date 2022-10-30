@@ -234,7 +234,6 @@ export const AccessControlManagement: React.FC = () => {
   };
 
   const handleOnEdit = (record: IDataType) => {
-    form.resetFields();
     setModal({
       title: `Edit details for ${record.firstName} ${record.lastName}`,
       body: <EditDetails {...record} form={form} />,
@@ -264,7 +263,9 @@ export const AccessControlManagement: React.FC = () => {
       <Table
         loading={loading}
         columns={columns}
-        dataSource={data}
+        dataSource={data.filter((record: IDataType) =>
+          JSON.stringify(record).toLowerCase().includes(search.toLowerCase())
+        )}
         rowKey="id"
         scroll={{ x: 1200 }}
       />

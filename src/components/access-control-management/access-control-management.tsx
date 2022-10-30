@@ -35,7 +35,7 @@ export const AccessControlManagement: React.FC = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
+        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.FETCH_USERS_LIST}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

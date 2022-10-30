@@ -69,6 +69,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
     >
       <Modal
         title={title}
+        centered
         open={isOpen}
         onOk={handleOnSubmit}
         onCancel={handleOnCancel}

@@ -144,7 +144,6 @@ export const AccessControlManagement: React.FC = () => {
       width: 150,
       render: (_, { status }) => {
         let color = '';
-
         switch (status) {
           case Status.APPROVED:
             color = StatusColor.APPROVED;
@@ -174,18 +173,17 @@ export const AccessControlManagement: React.FC = () => {
       onFilter: (value, record) => record.status === value
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Actions',
       fixed: 'right',
-      width: 80,
+      width: 90,
       render: (_, record) => (
-        <div className="space-x-3">
+        <div className="space-x-5">
           <EditOutlined
             onClick={() => handleOnEdit(record)}
             style={{ color: '#5C73DB' }}
           />
           <DeleteOutlined
-            onClick={() => handleOnDelete(record.id)}
+            onClick={() => handleOnDelete(record)}
             style={{ color: '#DC2626' }}
           />
         </div>
@@ -210,13 +208,13 @@ export const AccessControlManagement: React.FC = () => {
     setIsOpen(true);
   };
 
-  const handleOnDelete = (username: string) => {
+  const handleOnDelete = (record: IDataType) => {
     setModal({
-      title: `Delete user account`,
-      body: <DeleteUser username={username} />,
+      title: 'Delete user account',
+      body: <DeleteUser record={record} />,
       callback: () => async () => {
         // TODO: Send to backend
-        console.log('Deleting user account', username);
+        console.log('Deleting user account', record.id);
       }
     });
     setIsOpen(true);
@@ -235,6 +233,7 @@ export const AccessControlManagement: React.FC = () => {
         loading={loading}
         columns={columns}
         dataSource={data}
+        rowKey="id"
         scroll={{ x: 1200 }}
       />
     </HomeContent>

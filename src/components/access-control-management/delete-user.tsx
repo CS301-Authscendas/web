@@ -1,11 +1,13 @@
+import { IDataType } from './types';
+
 interface IProps {
-  username: string;
+  record: IDataType;
 }
 
-export const DeleteUser = ({ username }: IProps) => {
+export const DeleteUser = ({ record }: IProps) => {
   return (
-    <div className="flex w-full h-full items-center justify-center">
-      Do you want to delete {username}?
+    <div className="flex w-full h-full">
+      Do you want to delete {record.firstName} {record.lastName}?
     </div>
   );
 };

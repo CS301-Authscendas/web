@@ -1,5 +1,5 @@
 import { Form, Input, Select } from 'antd';
-import { ERoles, EStatus, IDataType } from './types';
+import { Role, Status, IDataType } from './types';
 
 interface IProps extends IDataType {
   form: any;
@@ -15,7 +15,7 @@ const validateMessages = {
 
 export const EditDetails = ({ form, ...props }: IProps) => {
   const renderRoleOptions = () =>
-    Object.keys(ERoles).map(role => {
+    Object.keys(Role).map(role => {
       return (
         <Select.Option color="black" key={role} value={role}>
           {role.toUpperCase()}
@@ -24,7 +24,7 @@ export const EditDetails = ({ form, ...props }: IProps) => {
     });
 
   const renderStatusOptions = () =>
-    Object.keys(EStatus).map(status => {
+    Object.keys(Status).map(status => {
       return (
         <Select.Option color="black" key={status} value={status}>
           {status.toUpperCase()}

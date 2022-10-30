@@ -6,92 +6,108 @@ import { useForm } from 'antd/lib/form/Form';
 import React, { useEffect, useState } from 'react';
 import { useAuth, useModal } from '../../providers';
 import { HomeContent } from '../common';
-import { data } from './data';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
-import { ERoles, ERolesColor, EStatus, EStatusColor, IDataType } from './types';
+import {
+  IDataType,
+  Role,
+  RoleColor,
+  RoleObj,
+  Status,
+  StatusColor
+} from './types';
 import { USER_ENDPOINTS } from '../../consts/consts';
 import { openNotification } from '../../utils/utils';
+import dayjs from 'dayjs';
+
+var utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 export const AccessControlManagement: React.FC = () => {
   const [search, setSearch] = useState('');
-  // const [formData, setFormData] = useState<IDataType>();
+  const [data, setData] = useState<IDataType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
   const [form] = useForm();
   const { jwtToken } = useAuth();
+
+  const fetchUserList = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
+        {
+          headers: { Authorization: `Bearer ${jwtToken}` }
+        }
+      );
+      setData(res.data);
+      setLoading(false);
+    } catch (_) {
+      openNotification('top', 'User list retrieval unsuccessful');
+    }
+  };
 
   useEffect(() => {
     if (!jwtToken) {
       return;
     }
-
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
-        {
-          headers: { Authorization: `Bearer ${jwtToken}` }
-        }
-      )
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        openNotification('top', 'User list retrieval unsuccessful');
-      });
+    fetchUserList();
   }, [jwtToken]);
 
   const columns: ColumnsType<IDataType> = [
     {
       title: 'User ID',
-      dataIndex: 'userId',
-      key: 'userId',
-      responsive: ['lg'],
-      render: text => <a>{text}</a>,
-      sorter: (a, b) => (a.userId > b.userId ? 1 : -1)
+      dataIndex: 'id',
+      width: 250,
+      sorter: (a, b) => (a.id > b.id ? 1 : -1)
     },
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      sorter: (a, b) => (a.name > b.name ? 1 : -1)
+      width: 180,
+      render: ({ firstName, lastName }) => (
+        <>
+          {firstName} {lastName}
+        </>
+      ),
+      sorter: (a, b) =>
+        `${a.firstName} ${a.lastName}` > `${b.firstName} ${b.lastName}` ? 1 : -1
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      key: 'email',
-      responsive: ['lg'],
+      width: 240,
       sorter: (a, b) => (a.email > b.email ? 1 : -1)
     },
     {
-      title: 'Last Updated',
-      dataIndex: 'lastUpdated',
-      key: 'lastUpdated',
-      responsive: ['lg']
+      title: 'Updated At',
+      width: 220,
+      render: (_, { updatedAt }) =>
+        // @ts-ignore
+        dayjs.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
     },
     {
       title: 'Roles',
-      dataIndex: 'roles',
-      key: 'roles',
-      responsive: ['md'],
+      width: 210,
       render: (_, { roles }) => (
         <>
-          {roles.map(role => {
+          {roles.map((role: RoleObj) => {
             let color = '';
-            switch (role) {
-              case ERoles.ADMIN:
-                color = ERolesColor.ADMIN;
+            switch (role.permission) {
+              case Role.USER:
+                color = RoleColor.USER;
                 break;
-              case ERoles.NON_ADMIN:
-                color = ERolesColor.NON_ADMIN;
+              case Role.ADMIN_READ:
+                color = RoleColor.ADMIN_READ;
                 break;
-              case ERoles.OWNER:
-                color = ERolesColor.OWNER;
+              case Role.ADMIN_WRITE:
+                color = RoleColor.ADMIN_WRITE;
+                break;
+              case Role.ADMIN_DELETE:
+                color = RoleColor.ADMIN_DELETE;
                 break;
             }
-
             return (
-              <Tag color={color} key={role}>
-                {role.toUpperCase()}
+              <Tag color={color} key={role.organizationId}>
+                {role.organizationId}: {role.permission}
               </Tag>
             );
           })}
@@ -99,60 +115,58 @@ export const AccessControlManagement: React.FC = () => {
       ),
       filters: [
         {
-          text: ERoles.ADMIN,
-          value: ERoles.ADMIN
+          text: Role.USER,
+          value: Role.USER
         },
         {
-          text: ERoles.NON_ADMIN,
-          value: ERoles.NON_ADMIN
+          text: Role.ADMIN_READ,
+          value: Role.ADMIN_READ
         },
         {
-          text: ERoles.OWNER,
-          value: ERoles.OWNER
+          text: Role.ADMIN_WRITE,
+          value: Role.ADMIN_WRITE
+        },
+        {
+          text: Role.ADMIN_DELETE,
+          value: Role.ADMIN_DELETE
         }
       ],
       filterMode: 'tree',
       filterSearch: true,
       onFilter: (value, record) => {
-        return record.roles.some(role => role === value);
+        return record.roles
+          .map(role => role.permission)
+          .some(role => role === value);
       }
     },
     {
       title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
+      width: 150,
       render: (_, { status }) => {
         let color = '';
 
         switch (status) {
-          case EStatus.ACTIVE:
-            color = EStatusColor.ACTIVE;
+          case Status.APPROVED:
+            color = StatusColor.APPROVED;
             break;
-          case EStatus.INACTIVE:
-            color = EStatusColor.INACTIVE;
-            break;
-          case EStatus.PENDING:
-            color = EStatusColor.PENDING;
+          case Status.PENDING:
+            color = StatusColor.PENDING;
             break;
         }
         return (
           <Tag color={color} key={status}>
-            {status.toUpperCase()}
+            {status}
           </Tag>
         );
       },
       filters: [
         {
-          text: EStatus.ACTIVE,
-          value: EStatus.ACTIVE
+          text: Status.APPROVED,
+          value: Status.APPROVED
         },
         {
-          text: EStatus.INACTIVE,
-          value: EStatus.INACTIVE
-        },
-        {
-          text: EStatus.PENDING,
-          value: EStatus.PENDING
+          text: Status.PENDING,
+          value: Status.PENDING
         }
       ],
       filterMode: 'tree',
@@ -162,6 +176,8 @@ export const AccessControlManagement: React.FC = () => {
     {
       title: 'Action',
       key: 'action',
+      fixed: 'right',
+      width: 80,
       render: (_, record) => (
         <div className="space-x-3">
           <EditOutlined
@@ -169,7 +185,7 @@ export const AccessControlManagement: React.FC = () => {
             style={{ color: '#5C73DB' }}
           />
           <DeleteOutlined
-            onClick={() => handleOnDelete(record.name)}
+            onClick={() => handleOnDelete(record.id)}
             style={{ color: '#DC2626' }}
           />
         </div>
@@ -184,7 +200,7 @@ export const AccessControlManagement: React.FC = () => {
   const handleOnEdit = (record: IDataType) => {
     form.resetFields();
     setModal({
-      title: `Edit details for ${name}`,
+      title: `Edit details for ${record.firstName} ${record.lastName}`,
       body: <EditDetails {...record} form={form} />,
       callback: () => async () => {
         // TODO: Send to backend
@@ -196,7 +212,7 @@ export const AccessControlManagement: React.FC = () => {
 
   const handleOnDelete = (username: string) => {
     setModal({
-      title: `Delete an user account`,
+      title: `Delete user account`,
       body: <DeleteUser username={username} />,
       callback: () => async () => {
         // TODO: Send to backend
@@ -215,7 +231,12 @@ export const AccessControlManagement: React.FC = () => {
         value={search}
         onChange={handleOnChange}
       />
-      <Table columns={columns} dataSource={data} />
+      <Table
+        loading={loading}
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 1200 }}
+      />
     </HomeContent>
   );
 };

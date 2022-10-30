@@ -1,33 +1,40 @@
 export interface IDataType {
-  key: string;
-  userId: string;
-  name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  lastUpdated: string;
-  roles: ERoles[];
-  status: EStatus;
+  birthDate: string;
+  updatedAt: number;
+  phoneNumber: string;
+  roles: RoleObj[];
+  status: Status;
 }
 
-export enum ERolesColor {
-  ADMIN = 'geekblue',
-  NON_ADMIN = 'green',
-  OWNER = 'volcano'
+export interface RoleObj {
+  organizationId: string;
+  permission: Role;
 }
 
-export enum ERoles {
-  ADMIN = 'admin',
-  NON_ADMIN = 'non-admin',
-  OWNER = 'owner'
+export enum RoleColor {
+  USER = 'green',
+  ADMIN_READ = 'geekblue',
+  ADMIN_WRITE = 'volcano',
+  ADMIN_DELETE = 'red'
 }
 
-export enum EStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+export enum Role {
+  USER = 'user',
+  ADMIN_READ = 'admin-read',
+  ADMIN_WRITE = 'admin-write',
+  ADMIN_DELETE = 'admin-delete'
+}
+
+export enum Status {
+  APPROVED = 'approved',
   PENDING = 'pending'
 }
 
-export enum EStatusColor {
-  ACTIVE = 'green',
-  INACTIVE = 'red',
+export enum StatusColor {
+  APPROVED = 'green',
   PENDING = 'volcano'
 }

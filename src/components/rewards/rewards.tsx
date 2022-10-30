@@ -1,9 +1,9 @@
 import { Card } from '../common/card';
+import { HomeContent } from '../common';
 
 export const Rewards: React.FC = () => {
   return (
-    <>
-      <div className="text-2xl font-medium mb-5">Rewards</div>
+    <HomeContent title="Rewards">
       <div className="flex space-x-8">
         <Card
           imgSrc="./assets/united.png"
@@ -17,6 +17,6 @@ export const Rewards: React.FC = () => {
           description="Travel, shop and eat: We’ve got the scoop on rewards (worth up to $1,098) and amazing travel deals with HSBC Credit Cards"
         />
       </div>
-    </>
+    </HomeContent>
   );
 };

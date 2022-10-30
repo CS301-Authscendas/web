@@ -1,4 +1,5 @@
 import { Form, Input, Select } from 'antd';
+import { useEffect } from 'react';
 import { Role, Status, IDataType } from './types';
 
 interface IProps extends IDataType {
@@ -32,13 +33,17 @@ export const EditDetails = ({ form, ...props }: IProps) => {
       );
     });
 
+  useEffect(() => {
+    form.setFieldsValue({ ...props, roles: props.roles[0].permission });
+  }, [props.email]);
+
   return (
     <Form
       labelCol={{ span: 5 }}
       wrapperCol={{ span: 19 }}
       form={form}
       validateMessages={validateMessages}
-      initialValues={props}
+      initialValues={{ ...props, roles: props.roles[0].permission }}
     >
       <Form.Item
         name="firstName"

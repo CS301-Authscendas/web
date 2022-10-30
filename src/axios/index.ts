@@ -1,9 +1,8 @@
 import axios from 'axios';
-
-const baseURL = process.env.GATEWAY_URL || 'http://localhost:3000';
+import { ENDPOINTS } from '../consts';
 
 const axiosInstance = axios.create({
-  baseURL: baseURL,
+  baseURL: ENDPOINTS.GATEWAY,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

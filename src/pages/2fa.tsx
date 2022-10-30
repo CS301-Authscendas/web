@@ -15,8 +15,9 @@ const TwoFAPage: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(router.query.email);
-    if (router.query.email) setEmail(router.query.email as string);
+    if (router.query.email) {
+      setEmail(router.query.email as string);
+    }
   }, [router.query]);
 
   const handleOnChange = (value: string) => {
@@ -32,14 +33,16 @@ const TwoFAPage: NextPage = () => {
           token
         }
       )
-      .then(response => {
-        console.log(response.status);
-        if (response.status == 201) {
-          setJwtToken(response.data.token);
+      .then(res => {
+        console.log(res.status);
+        if (res.status == 201) {
+          console.log(res.data.token);
+          setJwtToken(res.data.token);
+          localStorage.setItem('jwtToken', res.data.token);
           router.push('/home');
         }
       })
-      .catch(error => {
+      .catch(err => {
         openNotification(
           'top',
           'Invalid 2fa token',

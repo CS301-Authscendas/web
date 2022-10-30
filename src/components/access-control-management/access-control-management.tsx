@@ -1,21 +1,40 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-
+import axios from 'axios';
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useState } from 'react';
-import { useModal } from '../../providers';
+import React, { useEffect, useState } from 'react';
+import { useAuth, useModal } from '../../providers';
 import { HomeContent } from '../common';
 import { data } from './data';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
 import { ERoles, ERolesColor, EStatus, EStatusColor, IDataType } from './types';
+import { USER_ENDPOINTS } from '../../consts/consts';
+import { openNotification } from '../../utils/utils';
 
 export const AccessControlManagement: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [formData, setFormData] = useState<IDataType>();
+  // const [formData, setFormData] = useState<IDataType>();
   const { setModal, setIsOpen } = useModal();
   const [form] = useForm();
+  const { jwtToken } = useAuth();
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
+        {
+          headers: { Authorization: `Bearer ${jwtToken}` }
+        }
+      )
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        openNotification('top', 'User list retrieval unsuccessful');
+      });
+  }, []);
 
   const columns: ColumnsType<IDataType> = [
     {

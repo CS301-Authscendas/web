@@ -16,24 +16,21 @@ import { Rewards } from '../components/rewards';
 const Home: NextPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [tab, setTab] = useState<ELabels>(ELabels.ACCESS_CONTROL);
+  const { jwtToken, logout } = useAuth();
   const router = useRouter();
-  const { setSsoAccessToken, setIsLoading } = useAuth();
 
   useEffect(() => {
     if (router.isReady) {
-      const { jwtToken } = router.query;
-
+      // const { jwtToken } = router.query;
       if (!jwtToken) {
         return;
       }
 
-      console.log('--- SSO Login: ', jwtToken);
-      setSsoAccessToken(jwtToken as string);
-      setIsLoading(false);
-
+      //   console.log('--- SSO Login: ', jwtToken);
+      //   setSsoAccessToken(jwtToken as string);
+      //   setIsLoading(false);
       router.replace('/home', undefined, { shallow: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   const handleOnClick: TMenuHandleOnClick = e => {

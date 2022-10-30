@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
 import { AUTH_ENDPOINTS } from '../consts/consts';
+import { useAuth } from '../providers';
 import { openNotification } from '../utils/utils';
 
 const TwoFAPage: NextPage = () => {
   const [token, setToken] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const { setJwtToken } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const TwoFAPage: NextPage = () => {
       .then(response => {
         console.log(response.status);
         if (response.status == 201) {
+          setJwtToken(response.data.token);
           router.push('/home');
         }
       })

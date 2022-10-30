@@ -12,7 +12,7 @@ export interface IDataType {
 
 export interface RoleObj {
   organizationId: string;
-  permission: Role;
+  permission: Role[];
 }
 
 export enum RoleColor {

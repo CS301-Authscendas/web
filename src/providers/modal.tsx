@@ -27,6 +27,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string | React.ReactNode>(null);
   const [body, setBody] = useState<string | React.ReactNode>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [callback, setCallback] = useState<(() => {}) | undefined>(undefined);
 
   const setModal = (payload: IModalPayload) => {
@@ -44,6 +45,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
 
   const handleOnSubmit = async () => {
     try {
+      setLoading(true);
       if (callback) {
         await callback();
         setIsOpen(false);
@@ -51,6 +53,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
     } catch (error) {
       console.log('error in modal submit');
     } finally {
+      setLoading(false);
       closeModal();
     }
   };
@@ -69,10 +72,11 @@ export const ModalProvider: React.FC<IProps> = ({ children }: IProps) => {
     >
       <Modal
         title={title}
+        centered
         open={isOpen}
         onOk={handleOnSubmit}
         onCancel={handleOnCancel}
-        okButtonProps={{ ghost: true }}
+        okButtonProps={{ ghost: true, loading }}
       >
         {body}
       </Modal>

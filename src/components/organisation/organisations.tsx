@@ -35,7 +35,7 @@ export const Organisation: React.FC = () => {
             <div key={i}>
               <OrganisationCard
                 organisation={role.organizationId}
-                role={role.permission as Role}
+                role={role.permission[0] as Role}
               />
             </div>
           );

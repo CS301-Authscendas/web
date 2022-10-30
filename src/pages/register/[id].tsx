@@ -1,10 +1,10 @@
 import type { InferGetServerSidePropsType, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { Logo, Register } from '../../components';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { openNotification } from '../../utils/utils';
+import { Logo, Register } from '../../components';
 import { AUTH_ENDPOINTS } from '../../consts/consts';
+import { openNotification } from '../../utils/utils';
 
 const RegisterPage: NextPage = ({
   data
@@ -33,7 +33,7 @@ const RegisterPage: NextPage = ({
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.USER_SIGNUP_STATUS}/${context.params?.id}`
+    `${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.USER_SIGNUP_STATUS}/${context.params?.id}`
   );
 
   return {

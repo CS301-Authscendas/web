@@ -39,7 +39,7 @@ export const Login: React.FC = () => {
 
   const handleOnSubmit = () => {
     axios
-      .post(`${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.LOGIN}`, {
+      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.LOGIN}`, {
         email,
         password
       })

@@ -2,7 +2,7 @@ import { AUTH_ENDPOINTS } from '../consts/consts';
 
 export const AuthService = {
   ssoLoginRedirect: (): string | undefined => {
-    const backendUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
+    const backendUrl = process.env.GATEWAY_URL;
     const bankSsoUrl = `${backendUrl}${AUTH_ENDPOINTS.SSO_LOGIN}`;
 
     console.log(backendUrl);

@@ -1,10 +1,13 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/lib/form/Form';
+import axios from 'axios';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
+import { USER_ENDPOINTS } from '../../consts/consts';
 import { useAuth, useModal } from '../../providers';
+import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
@@ -16,9 +19,6 @@ import {
   Status,
   StatusColor
 } from './types';
-import { USER_ENDPOINTS } from '../../consts/consts';
-import { openNotification } from '../../utils/utils';
-import dayjs from 'dayjs';
 
 var utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
@@ -34,7 +34,7 @@ export const AccessControlManagement: React.FC = () => {
   const fetchUserList = async () => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
+        `${process.env.GATEWAY_URL}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
         {
           headers: { Authorization: `Bearer ${jwtToken}` }
         }

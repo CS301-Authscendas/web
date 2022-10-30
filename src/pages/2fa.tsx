@@ -26,13 +26,10 @@ const TwoFAPage: NextPage = () => {
 
   const handleSubmit = () => {
     axios
-      .post(
-        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.VALIDATE_2FA}`,
-        {
-          email,
-          token
-        }
-      )
+      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.VALIDATE_2FA}`, {
+        email,
+        token
+      })
       .then(res => {
         console.log(res.status);
         if (res.status == 201) {

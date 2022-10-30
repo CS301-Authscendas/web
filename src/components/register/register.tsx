@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button } from '../common';
 import { useRouter } from 'next/router';
-import { openNotification } from '../../utils/utils';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AUTH_ENDPOINTS } from '../../consts/consts';
+import { openNotification } from '../../utils/utils';
+import { Button } from '../common';
 
 interface IRegisterPayload {
   email: string;
@@ -69,7 +69,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
 
   const handleOnSubmit = async () => {
     await axios
-      .post(`${process.env.NEXT_PUBLIC_GATEWAY_URL}${AUTH_ENDPOINTS.SIGNUP}`, {
+      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.SIGNUP}`, {
         email,
         firstName,
         lastName,

@@ -3,6 +3,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../../providers';
 import { Role, RoleColor } from '../../access-control-management/types';
+import { LabelUrls } from '../side-bar';
 
 interface OrganisationCardProps {
   organisation: string;
@@ -18,13 +19,13 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
 
   const redirectUser = () => {
     if (role === Role.USER) {
-      router.push('/rewards');
+      router.push(LabelUrls.REWARDS);
     } else if (
       role === Role.ADMIN_DELETE ||
       role === Role.ADMIN_READ ||
       role === Role.ADMIN_WRITE
     ) {
-      router.push('/access-mamangement-control');
+      router.push(LabelUrls.ACCESS_CONTROL);
     } else {
       logout();
     }

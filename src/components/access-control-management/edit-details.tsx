@@ -6,47 +6,74 @@ interface IProps extends IDataType {
 }
 
 const validateMessages = {
-  required: '${label} is required',
+  required: 'Required field',
   types: {
-    email: 'Not a valid email',
-    number: 'Not a valid number'
+    email: 'Invalid email',
+    number: 'Invalid number'
   }
 };
 
 export const EditDetails = ({ form, ...props }: IProps) => {
   const renderRoleOptions = () =>
-    Object.keys(Role).map(role => {
+    Object.values(Role).map(role => {
       return (
         <Select.Option color="black" key={role} value={role}>
-          {role.toUpperCase()}
+          {role}
         </Select.Option>
       );
     });
 
   const renderStatusOptions = () =>
-    Object.keys(Status).map(status => {
+    Object.values(Status).map(status => {
       return (
         <Select.Option color="black" key={status} value={status}>
-          {status.toUpperCase()}
+          {status}
         </Select.Option>
       );
     });
 
   return (
-    <Form form={form} validateMessages={validateMessages} initialValues={props}>
-      <Form.Item name="name" label="Name">
-        <Input />
+    <Form
+      labelCol={{ span: 5 }}
+      wrapperCol={{ span: 19 }}
+      form={form}
+      validateMessages={validateMessages}
+      initialValues={props}
+    >
+      <Form.Item
+        name="firstName"
+        label="First Name"
+        rules={[{ required: true }]}
+      >
+        <Input allowClear />
       </Form.Item>
-      <Form.Item name="email" label="Email" rules={[{ type: 'email' }]}>
-        <Input />
+      <Form.Item name="lastName" label="Last Name" rules={[{ required: true }]}>
+        <Input allowClear />
       </Form.Item>
-      <Form.Item name="roles" label="Roles" hasFeedback>
-        <Select mode="multiple" placeholder="Please select the role(s)">
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[{ required: true }, { type: 'email' }]}
+      >
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item
+        name="roles"
+        label="Roles"
+        hasFeedback
+        rules={[{ required: true }]}
+      >
+        <Select allowClear mode="multiple" placeholder="Please select role(s)">
           {renderRoleOptions()}
         </Select>
       </Form.Item>
-      <Form.Item name="status" label="Status" hasFeedback>
-        <Select placeholder="Please select a status">
+      <Form.Item
+        name="status"
+        label="Status"
+        hasFeedback
+        rules={[{ required: true }]}
+      >
+        <Select allowClear placeholder="Please select status">
           {renderStatusOptions()}
         </Select>
       </Form.Item>

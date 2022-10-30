@@ -86,31 +86,33 @@ export const AccessControlManagement: React.FC = () => {
     },
     {
       title: 'Roles',
-      width: 210,
+      width: 150,
       render: (_, { roles }) => (
         <>
-          {roles.map((role: RoleObj) => {
-            let color = '';
-            switch (role.permission) {
-              case Role.USER:
-                color = RoleColor.USER;
-                break;
-              case Role.ADMIN_READ:
-                color = RoleColor['ADMIN-READ'];
-                break;
-              case Role.ADMIN_WRITE:
-                color = RoleColor['ADMIN-WRITE'];
-                break;
-              case Role.ADMIN_DELETE:
-                color = RoleColor['ADMIN-DELETE'];
-                break;
-            }
-            return (
-              <Tag color={color} key={role.organizationId}>
-                {role.organizationId}: {role.permission}
-              </Tag>
-            );
-          })}
+          {roles
+            .filter((role: RoleObj) => role.organizationId === 'MyBank')
+            .map((role: RoleObj) => {
+              let color = '';
+              switch (role.permission) {
+                case Role.USER:
+                  color = RoleColor.USER;
+                  break;
+                case Role.ADMIN_READ:
+                  color = RoleColor['ADMIN-READ'];
+                  break;
+                case Role.ADMIN_WRITE:
+                  color = RoleColor['ADMIN-WRITE'];
+                  break;
+                case Role.ADMIN_DELETE:
+                  color = RoleColor['ADMIN-DELETE'];
+                  break;
+              }
+              return (
+                <Tag color={color} key={role.organizationId}>
+                  {role.permission}
+                </Tag>
+              );
+            })}
         </>
       ),
       filters: [
@@ -134,9 +136,9 @@ export const AccessControlManagement: React.FC = () => {
       filterMode: 'tree',
       filterSearch: true,
       onFilter: (value, record) => {
-        return record.roles
-          .map(role => role.permission)
-          .some(role => role === value);
+        return record.roles.some(
+          role => role.permission === value && role.organizationId === 'MyBank'
+        );
       }
     },
     {
@@ -214,7 +216,7 @@ export const AccessControlManagement: React.FC = () => {
       body: <DeleteUser record={record} />,
       callback: () => async () => {
         // TODO: Send to backend
-        console.log('Deleting user account', record.id);
+        console.log('Deleting user account', record.email);
       }
     });
     setIsOpen(true);

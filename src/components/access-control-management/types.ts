@@ -16,10 +16,10 @@ export interface RoleObj {
 }
 
 export enum RoleColor {
-  USER = 'green',
-  ADMIN_READ = 'geekblue',
-  ADMIN_WRITE = 'volcano',
-  ADMIN_DELETE = 'red'
+  'USER' = 'green',
+  'ADMIN-READ' = 'geekblue',
+  'ADMIN-WRITE' = 'volcano',
+  'ADMIN-DELETE' = 'red'
 }
 
 export enum Role {

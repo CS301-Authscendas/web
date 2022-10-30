@@ -6,18 +6,20 @@ import { Role, RoleColor } from '../../access-control-management/types';
 import { LabelUrls } from '../side-bar';
 
 interface OrganisationCardProps {
-  organisation: string;
+  organisationId: string;
   permisions: Role[];
 }
 
 export const OrganisationCard: React.FC<OrganisationCardProps> = ({
-  organisation,
+  organisationId,
   permisions
 }) => {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, setOrganisation } = useAuth();
 
-  const redirectUser = () => {
+  const onClick = () => {
+    setOrganisation(organisationId);
+
     let isAdmin = false;
     let isUser = false;
     permisions.forEach(permision => {
@@ -41,12 +43,15 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
     }
   };
 
+  // const
+
   return (
     <div
-      onClick={redirectUser}
+      onClick={onClick}
       className="rounded-lg bg-white h-14 flex items-center justify-between px-8"
     >
-      <p className="font-semibold mr-8">{organisation}</p>
+      {/* TODO: change name */}
+      <p className="font-semibold mr-8">{organisationId}</p>
       <div className="flex space-x-4">
         <>
           {permisions.map((permision, i) => {

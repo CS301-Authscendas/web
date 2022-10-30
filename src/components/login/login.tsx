@@ -9,6 +9,7 @@ import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
+  console.log(process.env);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>('');

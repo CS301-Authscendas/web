@@ -32,17 +32,41 @@ export const AccessControlManagement: React.FC = () => {
   const { jwtToken } = useAuth();
 
   const fetchUserList = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.FETCH_USERS_LIST}/MyBank`,
         {
-          headers: { Authorization: `Bearer ${jwtToken}` }
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'organization-id': 'MyBank',
+            'login-method': 'HOSTED'
+          }
         }
       );
       setData(res.data);
-      setLoading(false);
-    } catch (_) {
+    } catch (e) {
       openNotification('top', 'User list retrieval unsuccessful');
+    }
+    setLoading(false);
+  };
+
+  const deleteUser = async (email: string) => {
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_GATEWAY_URL}${USER_ENDPOINTS.GET_USER}/${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'organization-id': 'MyBank',
+            'login-method': 'HOSTED'
+          }
+        }
+      );
+      openNotification('top', 'Successful deletion');
+      await fetchUserList();
+    } catch (e) {
+      openNotification('top', 'Delete user unsuccessful');
     }
   };
 
@@ -214,10 +238,7 @@ export const AccessControlManagement: React.FC = () => {
     setModal({
       title: 'Delete user account',
       body: <DeleteUser record={record} />,
-      callback: () => async () => {
-        // TODO: Send to backend
-        console.log('Deleting user account', record.email);
-      }
+      callback: () => async () => deleteUser(record.email)
     });
     setIsOpen(true);
   };

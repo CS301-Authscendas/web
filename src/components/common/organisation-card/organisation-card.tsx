@@ -7,25 +7,35 @@ import { LabelUrls } from '../side-bar';
 
 interface OrganisationCardProps {
   organisation: string;
-  role: Role;
+  permisions: Role[];
 }
 
 export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   organisation,
-  role
+  permisions
 }) => {
   const router = useRouter();
   const { logout } = useAuth();
 
   const redirectUser = () => {
-    if (role === Role.USER) {
-      router.push(LabelUrls.REWARDS);
-    } else if (
-      role === Role.ADMIN_DELETE ||
-      role === Role.ADMIN_READ ||
-      role === Role.ADMIN_WRITE
-    ) {
+    let isAdmin = false;
+    let isUser = false;
+    permisions.forEach(permision => {
+      if (
+        permision === Role.ADMIN_DELETE ||
+        permision === Role.ADMIN_READ ||
+        permision === Role.ADMIN_WRITE
+      ) {
+        isAdmin = true;
+      } else if (permision === Role.USER) {
+        isUser = true;
+      }
+    });
+
+    if (isAdmin) {
       router.push(LabelUrls.ACCESS_CONTROL);
+    } else if (isUser) {
+      router.push(LabelUrls.REWARDS);
     } else {
       logout();
     }
@@ -37,13 +47,24 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       className="rounded-lg bg-white h-14 flex items-center justify-between px-8"
     >
       <p className="font-semibold mr-8">{organisation}</p>
-      <div className="flex space-x-8">
-        <Tag
-          color={RoleColor[role.toLocaleUpperCase() as keyof typeof RoleColor]}
-        >
-          {role === Role.USER ? Role.USER : role.split('-')[0]}
-        </Tag>
-        <RightOutlined className="my-auto" />
+      <div className="flex space-x-4">
+        <>
+          {permisions.map((permision, i) => {
+            return (
+              <Tag
+                key={i}
+                color={
+                  RoleColor[
+                    permision.toLocaleUpperCase() as keyof typeof RoleColor
+                  ]
+                }
+              >
+                {permision === Role.USER ? Role.USER : permision.split('-')[0]}
+              </Tag>
+            );
+          })}
+          <RightOutlined className="my-auto" />
+        </>
       </div>
     </div>
   );

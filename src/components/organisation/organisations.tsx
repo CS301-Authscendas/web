@@ -16,6 +16,7 @@ export const Organisation: React.FC = () => {
         headers: { Authorization: `Bearer ${jwtToken}` }
       }
     );
+    console.log(resp.data.data.userDetails.roles);
     setRoles(resp.data.data.userDetails.roles);
   };
 
@@ -35,7 +36,7 @@ export const Organisation: React.FC = () => {
             <div key={i}>
               <OrganisationCard
                 organisation={role.organizationId}
-                role={role.permission[0] as Role}
+                permisions={role.permission as Role[]}
               />
             </div>
           );

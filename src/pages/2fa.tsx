@@ -36,7 +36,6 @@ const TwoFAPage: NextPage = () => {
       .then(res => {
         console.log(res.status);
         if (res.status == 201) {
-          console.log(res.data.token);
           setJwtToken(res.data.token);
           localStorage.setItem('jwtToken', res.data.token);
           router.push('/home');

@@ -8,13 +8,11 @@ interface IProps {
   collapsed: boolean;
   handleOnCollapsed: () => void;
   handleOnClick: TMenuHandleOnClick;
+  defaultKey: ELabels;
 }
 
-export const SideBar = ({
-  collapsed,
-  handleOnCollapsed,
-  handleOnClick
-}: IProps) => {
+export const SideBar: React.FC<IProps> = (props: IProps) => {
+  const { collapsed, handleOnCollapsed, handleOnClick, defaultKey } = props;
   const [isCollapsible, setIsCollapsible] = useState<boolean>(true);
 
   return (
@@ -27,16 +25,18 @@ export const SideBar = ({
       breakpoint="lg"
       onCollapse={handleOnCollapsed}
     >
-      <div className="p-5 mb-3 border-b border-b-gray-700">
-        <Logo renderText={false} colorScheme={ColorScheme.DARK} />
-      </div>
-      <Menu
-        onClick={handleOnClick}
-        theme="dark"
-        defaultSelectedKeys={[ELabels.ACCESS_CONTROL]}
-        mode="inline"
-        items={items}
-      />
+      <>
+        <div className="p-5 mb-3 border-b border-b-gray-700">
+          <Logo renderText={false} colorScheme={ColorScheme.DARK} />
+        </div>
+        <Menu
+          onClick={handleOnClick}
+          theme="dark"
+          defaultSelectedKeys={[defaultKey]}
+          mode="inline"
+          items={items}
+        />
+      </>
     </Layout.Sider>
   );
 };

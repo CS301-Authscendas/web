@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
-import { AUTH_ENDPOINTS } from '../consts';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../consts';
 import { useAuth } from '../providers';
 import { openNotification } from '../utils/utils';
 
@@ -26,12 +26,11 @@ const TwoFAPage: NextPage = () => {
 
   const handleSubmit = () => {
     axios
-      .post(`${process.env.GATEWAY_URL}${AUTH_ENDPOINTS.VALIDATE_2FA}`, {
+      .post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_2FA}`, {
         email,
         token
       })
       .then(res => {
-        console.log(res.status);
         if (res.status == 201) {
           setJwtToken(res.data.token);
           localStorage.setItem('jwtToken', res.data.token);

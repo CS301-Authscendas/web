@@ -6,5 +6,11 @@ export enum ELabels {
   REWARDS = 'REWARDS'
 }
 
+export enum LabelUrls {
+  ACCESS_CONTROL = '/access-management-control',
+  UPLOAD_FILE = '/upload-file',
+  REWARDS = '/rewards'
+}
+
 export type TMenuItem = Required<MenuProps>['items'][number];
 export type TMenuHandleOnClick = MenuProps['onClick'];

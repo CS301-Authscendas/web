@@ -15,6 +15,8 @@ interface IAuthContext {
   isLoggedIn: boolean;
   jwtToken: string;
   setJwtToken: Dispatch<SetStateAction<string>>;
+  organisation: string;
+  setOrganisation: Dispatch<SetStateAction<string>>;
 }
 
 interface IProps {
@@ -27,13 +29,16 @@ const AuthContext = createContext<IAuthContext>({
   logout: () => {},
   isLoggedIn: false,
   jwtToken: '',
-  setJwtToken: () => {}
+  setJwtToken: () => {},
+  organisation: '',
+  setOrganisation: () => {}
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [jwtToken, setJwtToken] = useState<string>('');
+  const [organisation, setOrganisation] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
@@ -71,7 +76,9 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         logout,
         isLoggedIn,
         jwtToken,
-        setJwtToken
+        setJwtToken,
+        organisation,
+        setOrganisation
       }}
     >
       {children}

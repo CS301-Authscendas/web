@@ -1,5 +1,5 @@
-import { Card } from '../common/card';
 import { HomeContent } from '../common';
+import { Card } from '../common/card';
 
 export const Rewards: React.FC = () => {
   return (

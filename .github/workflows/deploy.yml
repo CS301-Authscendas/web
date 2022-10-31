@@ -3,7 +3,7 @@ name: Build before Deployment to ECS
 on:
   push:
     branches:
-      - "*"
+      - "main"
   pull_request:
     branches:
       - "*"

@@ -19,7 +19,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
   const [collapsed, setCollapsed] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { jwtToken, loginMethod, organisationId } = useAuth();
+  const { jwtToken, loginMethod, organisationId, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
 
   const onOk = () => {
     // TODO: add delete user end pt
-    axios.delete(``, {
+    axios.delete(`${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.DELETE_MYSELF}`, {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
         'login-method': loginMethod,
@@ -38,6 +38,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
       }
     });
     setOpenModal(false);
+    logout();
   };
   const handleOnClick: TMenuHandleOnClick = e => {
     const key = ELabels[e.key as keyof typeof ELabels];

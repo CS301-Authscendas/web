@@ -18,7 +18,8 @@ export const USER_ENDPOINTS = {
   FETCH_ORGANIZATIONS: '/user/fetch-organizations',
   FETCH_USERS_LIST: '/user/fetch/users-list',
   GET_USER: '/user',
-  EDIT_USER_DETAILS: '/user/edit-user-details'
+  EDIT_USER_DETAILS: '/user/edit-user-details',
+  DELETE_MYSELF: '/user/myself'
 };
 
 export const ENDPOINTS = {

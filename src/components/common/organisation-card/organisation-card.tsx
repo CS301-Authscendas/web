@@ -2,11 +2,7 @@ import { Tag } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../../providers';
-import {
-  Role,
-  RoleColor,
-  RoleObj
-} from '../../access-control-management/types';
+import { Role, RoleColor } from '../../access-control-management/types';
 import { LabelUrls } from '../side-bar';
 import axios from 'axios';
 import { AUTH_ENDPOINTS, ENDPOINTS } from '../../../consts';
@@ -24,14 +20,8 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   permisions
 }) => {
   const router = useRouter();
-  const {
-    jwtToken,
-    loginMethod,
-    logout,
-    setOrganisationId,
-    setRoles,
-    userDetails
-  } = useAuth();
+  const { jwtToken, loginMethod, logout, setOrganisationId, setRoles } =
+    useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   const onClick = async () => {
@@ -52,15 +42,12 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
         'top',
         `${loginMethod} login method not supported for organisation`
       );
+      return;
     }
 
     setOrganisationId(organisationId);
     localStorage.setItem('organisationId', organisationId);
-    setRoles(
-      userDetails!.roles.find(
-        (role: RoleObj) => role.organizationId === organisationId
-      )!.permission
-    );
+    setRoles(permisions);
 
     let isAdmin = false;
     let isUser = false;

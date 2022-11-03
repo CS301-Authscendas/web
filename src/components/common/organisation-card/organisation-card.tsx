@@ -11,13 +11,15 @@ import { useState } from 'react';
 
 interface OrganisationCardProps {
   key: number;
-  organisationId: string;
-  permisions: Role[];
+  organizationName: string;
+  organizationId: string;
+  permissions: Role[];
 }
 
 export const OrganisationCard: React.FC<OrganisationCardProps> = ({
-  organisationId,
-  permisions
+  organizationId,
+  organizationName,
+  permissions
 }) => {
   const router = useRouter();
   const { jwtToken, loginMethod, logout, setOrganisationId, setRoles } =
@@ -33,7 +35,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
           headers: {
             Authorization: `Bearer ${jwtToken}`,
             'login-method': loginMethod,
-            'organization-id': organisationId
+            'organization-id': organizationId
           }
         }
       );
@@ -42,23 +44,24 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
         'top',
         `${loginMethod} login method not supported for organisation`
       );
+      setLoading(false);
       return;
     }
 
-    setOrganisationId(organisationId);
-    localStorage.setItem('organisationId', organisationId);
-    setRoles(permisions);
+    setOrganisationId(organizationId);
+    localStorage.setItem('organisationId', organizationId);
+    setRoles(permissions);
 
     let isAdmin = false;
     let isUser = false;
-    permisions.forEach(permision => {
+    permissions.forEach(permission => {
       if (
-        permision === Role.ADMIN_DELETE ||
-        permision === Role.ADMIN_READ ||
-        permision === Role.ADMIN_WRITE
+        permission === Role.ADMIN_DELETE ||
+        permission === Role.ADMIN_READ ||
+        permission === Role.ADMIN_WRITE
       ) {
         isAdmin = true;
-      } else if (permision === Role.USER) {
+      } else if (permission === Role.USER) {
         isUser = true;
       }
     });
@@ -78,21 +81,20 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       onClick={onClick}
       className="cursor-pointer rounded-lg bg-white hover:bg-gray-50 h-14 flex items-center justify-between px-8"
     >
-      {/* TODO: change name */}
-      <p className="font-semibold text-base mr-8">{organisationId}</p>
+      <p className="font-semibold text-base mr-8">{organizationName}</p>
       <div className="flex space-x-4">
         <>
-          {permisions.map((permision, i) => {
+          {permissions.map((permission, i) => {
             return (
               <Tag
                 key={i}
                 color={
                   RoleColor[
-                    permision.toLocaleUpperCase() as keyof typeof RoleColor
+                    permission.toLocaleUpperCase() as keyof typeof RoleColor
                   ]
                 }
               >
-                {permision === Role.USER ? Role.USER : permision.split('-')[0]}
+                {permission}
               </Tag>
             );
           })}

@@ -19,6 +19,12 @@ export interface RoleObj {
   permission: Role[];
 }
 
+export interface OrgRole {
+  organizationName: string;
+  organizationId: string;
+  permission: Role[];
+}
+
 export enum RoleColor {
   'USER' = 'green',
   'ADMIN-READ' = 'geekblue',

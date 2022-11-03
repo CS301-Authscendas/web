@@ -65,7 +65,7 @@ export const AccessControlManagement: React.FC = () => {
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
         {
           ...values,
-          roles: { organizationId: organisationId, permission: values.roles }
+          roles: [{ organizationId: organisationId, permission: values.roles }]
         },
         {
           headers: {

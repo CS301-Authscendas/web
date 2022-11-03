@@ -6,6 +6,7 @@ import { Role, RoleColor } from '../../access-control-management/types';
 import { LabelUrls } from '../side-bar';
 
 interface OrganisationCardProps {
+  key: number;
   organisationId: string;
   permisions: Role[];
 }
@@ -47,7 +48,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className="rounded-lg bg-white h-14 flex items-center justify-between px-8"
+      className="cursor-pointer rounded-lg bg-white hover:bg-gray-50 h-14 flex items-center justify-between px-8"
     >
       {/* TODO: change name */}
       <p className="font-semibold mr-8">{organisationId}</p>

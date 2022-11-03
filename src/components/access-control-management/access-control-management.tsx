@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Table, Tag } from 'antd';
+import { Table, Tag, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
@@ -231,14 +231,32 @@ export const AccessControlManagement: React.FC = () => {
       width: 90,
       render: (_, record) => (
         <div className="space-x-5">
-          <EditOutlined
-            onClick={() => handleOnEdit(record)}
-            style={{ color: '#5C73DB' }}
-          />
-          <DeleteOutlined
-            onClick={() => handleOnDelete(record)}
-            style={{ color: '#DC2626' }}
-          />
+          {permissions?.includes(Role.ADMIN_WRITE) ? (
+            <EditOutlined
+              onClick={() => handleOnEdit(record)}
+              style={{ color: '#5C73DB' }}
+            />
+          ) : (
+            <Tooltip title="Edit not allowed">
+              <EditOutlined
+                className="cursor-not-allowed"
+                style={{ color: '#BBBBBB' }}
+              />
+            </Tooltip>
+          )}
+          {permissions?.includes(Role.ADMIN_DELETE) ? (
+            <DeleteOutlined
+              onClick={() => handleOnDelete(record)}
+              style={{ color: '#DC2626' }}
+            />
+          ) : (
+            <Tooltip title="Delete not allowed">
+              <DeleteOutlined
+                className="cursor-not-allowed"
+                style={{ color: '#BBBBBB' }}
+              />
+            </Tooltip>
+          )}
         </div>
       )
     }

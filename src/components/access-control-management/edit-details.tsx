@@ -1,10 +1,10 @@
 import { Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
-import { Role, Status, IDataType, IEditUserReq } from './types';
+import { Role, Status, IDataType, IEditUserForm } from './types';
 
 interface IProps extends IDataType {
-  form: FormInstance;
+  form: FormInstance<IEditUserForm>;
 }
 
 const validateMessages = {
@@ -67,16 +67,6 @@ export const EditDetails = ({ form, ...props }: IProps) => {
       >
         <Input allowClear />
       </Form.Item>
-      <Form.Item name="phoneNumber" label="Phone">
-        <Input allowClear />
-      </Form.Item>
-      <Form.Item
-        name="birthDate"
-        label="Birth Date"
-        rules={[{ required: true }]}
-      >
-        <Input allowClear />
-      </Form.Item>
       <Form.Item
         name="roles"
         label="Roles"
@@ -96,6 +86,16 @@ export const EditDetails = ({ form, ...props }: IProps) => {
         <Select allowClear placeholder="Please select status">
           {renderStatusOptions()}
         </Select>
+      </Form.Item>
+      <Form.Item
+        name="birthDate"
+        label="Birth Date"
+        rules={[{ required: true }]}
+      >
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item name="phoneNumber" label="Phone">
+        <Input allowClear />
       </Form.Item>
     </Form>
   );

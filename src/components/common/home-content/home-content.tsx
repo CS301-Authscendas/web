@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export const HomeContent = ({ title, children }: IProps) => {
-  const { logout } = useAuth();
+  const { logout, userDetails } = useAuth();
 
   const router = useRouter();
 
@@ -21,9 +21,15 @@ export const HomeContent = ({ title, children }: IProps) => {
     <Fragment>
       <div className="flex justify-between items-center mb-8">
         <div className="text-2xl font-medium">{title}</div>
-        <Button type="primary" ghost onClick={changeOrganisation}>
-          Change organisation
-        </Button>
+        <div className="flex items-center space-x-6">
+          <div className="font-semibold text-base">
+            {userDetails?.firstName} {userDetails?.lastName}
+          </div>
+          <Button onClick={changeOrganisation}>Change organisation</Button>
+          <Button type="primary" ghost onClick={logout}>
+            Logout
+          </Button>
+        </div>
       </div>
       {children}
     </Fragment>

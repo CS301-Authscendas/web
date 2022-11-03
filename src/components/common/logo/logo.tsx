@@ -17,7 +17,7 @@ export const Logo = ({
   return (
     <div className={`flex flex-col ${renderText && 'mb-6'}`}>
       <div className="flex justify-center items-center">
-        <div className={`${width && width}`}>
+        <div className={width && `${width}`}>
           <img src={`/assets/authcendas-${colorScheme}.png`} />
         </div>
       </div>

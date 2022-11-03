@@ -1,7 +1,11 @@
 import { Layout, Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { LoginMethod } from '../../../consts';
+import { useAuth } from '../../../providers/auth';
+import { getUserDetails } from '../../../utils/utils';
+import { RoleObj } from '../../access-control-management/types';
 import { ColorScheme, Logo } from '../logo';
-import { items } from './data';
+import { getItems } from './data';
 import { ELabels, TMenuHandleOnClick } from './types';
 
 interface IProps {
@@ -12,8 +16,33 @@ interface IProps {
 }
 
 export const SideBar: React.FC<IProps> = (props: IProps) => {
+  const {
+    organisationId,
+    jwtToken,
+    loginMethod,
+    setUserDetails,
+    roles,
+    setRoles
+  } = useAuth();
   const { collapsed, handleOnCollapsed, handleOnClick, defaultKey } = props;
   const [isCollapsible, setIsCollapsible] = useState<boolean>(true);
+
+  const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    const details = await getUserDetails(token, method);
+    setUserDetails(details);
+    setRoles(
+      details.roles.find(
+        (role: RoleObj) => role.organizationId === organisationId
+      ).permission
+    );
+  };
+
+  useEffect(() => {
+    if (!jwtToken || !loginMethod) {
+      return;
+    }
+    fetchUserDetails(jwtToken, loginMethod);
+  }, [jwtToken, loginMethod]);
 
   return (
     <Layout.Sider
@@ -25,18 +54,16 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
       breakpoint="lg"
       onCollapse={handleOnCollapsed}
     >
-      <>
-        <div className="p-5 mb-3 border-b border-b-gray-700">
-          <Logo renderText={false} colorScheme={ColorScheme.DARK} />
-        </div>
-        <Menu
-          onClick={handleOnClick}
-          theme="dark"
-          defaultSelectedKeys={[defaultKey]}
-          mode="inline"
-          items={items}
-        />
-      </>
+      <div className="p-5 mb-3 border-b border-b-gray-700">
+        <Logo renderText={false} colorScheme={ColorScheme.DARK} />
+      </div>
+      <Menu
+        onClick={handleOnClick}
+        theme="dark"
+        defaultSelectedKeys={[defaultKey]}
+        mode="inline"
+        items={getItems(roles)}
+      />
     </Layout.Sider>
   );
 };

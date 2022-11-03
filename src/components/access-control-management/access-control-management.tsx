@@ -5,15 +5,15 @@ import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { ENDPOINTS, LoginMethod, USER_ENDPOINTS } from '../../consts';
+import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
 import { useAuth, useModal } from '../../providers';
-import { getUserDetails, openNotification } from '../../utils/utils';
+import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
 import {
   IDataType,
-  IEditUserReq,
+  IEditUserForm,
   Role,
   RoleColor,
   RoleObj,
@@ -22,13 +22,14 @@ import {
 } from './types';
 
 export const AccessControlManagement: React.FC = () => {
+  const { jwtToken, loginMethod, organisationId, userDetails } = useAuth();
   const [search, setSearch] = useState('');
   const [data, setData] = useState<IDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
-  const [form] = useForm<IEditUserReq>();
-  const { jwtToken, loginMethod, organisationId } = useAuth();
+  const [form] = useForm<IEditUserForm>();
   const [permissions, setPermissions] = useState<Role[]>();
+  const [userId, setUserId] = useState<string>('');
 
   const fetchUserList = async () => {
     setLoading(true);
@@ -51,16 +52,7 @@ export const AccessControlManagement: React.FC = () => {
     }
   };
 
-  const fetchUserDetails = async (token: string, method: LoginMethod) => {
-    const details = await getUserDetails(token, method);
-    const roles: RoleObj = details.roles.find(
-      (role: RoleObj) => role.organizationId === organisationId
-    );
-    console.log(roles.permission);
-    setPermissions(roles.permission);
-  };
-
-  const editUser = async (values: IEditUserReq) => {
+  const editUser = async (values: IEditUserForm) => {
     try {
       await axios.put(
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
@@ -107,8 +99,18 @@ export const AccessControlManagement: React.FC = () => {
       return;
     }
     fetchUserList();
-    fetchUserDetails(jwtToken, loginMethod);
   }, [jwtToken, loginMethod, organisationId]);
+
+  useEffect(() => {
+    if (!userDetails) {
+      return;
+    }
+    const roles = userDetails.roles.find(
+      (role: RoleObj) => role.organizationId === organisationId
+    );
+    setPermissions(roles!.permission);
+    setUserId(userDetails.id);
+  }, [userDetails]);
 
   const columns: ColumnsType<IDataType> = [
     {
@@ -133,24 +135,6 @@ export const AccessControlManagement: React.FC = () => {
       dataIndex: 'email',
       width: 240,
       sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Phone',
-      render: ({ phoneNumber }) => phoneNumber || '-',
-      width: 180,
-      sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Birth Date',
-      dataIndex: 'birthDate',
-      width: 150,
-      sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Updated At',
-      width: 220,
-      render: (_, { updatedAt }) =>
-        moment.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
     },
     {
       title: 'Roles',
@@ -239,12 +223,30 @@ export const AccessControlManagement: React.FC = () => {
       onFilter: (value, record) => record.status === value
     },
     {
+      title: 'Birth Date',
+      dataIndex: 'birthDate',
+      width: 150,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Phone',
+      render: ({ phoneNumber }) => phoneNumber || '-',
+      width: 180,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Updated At',
+      width: 220,
+      render: (_, { updatedAt }) =>
+        moment.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
+    },
+    {
       title: 'Actions',
       fixed: 'right',
       width: 90,
       render: (_, record) => (
         <div className="space-x-5">
-          {permissions?.includes(Role.ADMIN_WRITE) ? (
+          {record.id !== userId && permissions?.includes(Role.ADMIN_WRITE) ? (
             <EditOutlined
               onClick={() => handleOnEdit(record)}
               style={{ color: '#5C73DB' }}
@@ -257,7 +259,7 @@ export const AccessControlManagement: React.FC = () => {
               />
             </Tooltip>
           )}
-          {permissions?.includes(Role.ADMIN_DELETE) ? (
+          {record.id !== userId && permissions?.includes(Role.ADMIN_DELETE) ? (
             <DeleteOutlined
               onClick={() => handleOnDelete(record)}
               style={{ color: '#DC2626' }}

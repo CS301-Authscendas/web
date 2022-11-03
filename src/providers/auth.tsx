@@ -7,6 +7,7 @@ import {
   useEffect,
   useState
 } from 'react';
+import { IDataType, Role } from '../components/access-control-management/types';
 import { LoginMethod } from '../consts';
 
 interface IAuthContext {
@@ -20,6 +21,10 @@ interface IAuthContext {
   setOrganisationId: Dispatch<SetStateAction<string>>;
   loginMethod: LoginMethod | undefined;
   setLoginMethod: Dispatch<SetStateAction<LoginMethod | undefined>>;
+  userDetails: IDataType | undefined;
+  setUserDetails: Dispatch<SetStateAction<IDataType | undefined>>;
+  roles: Role[];
+  setRoles: Dispatch<SetStateAction<Role[]>>;
 }
 
 interface IProps {
@@ -36,7 +41,11 @@ const AuthContext = createContext<IAuthContext>({
   organisationId: '',
   setOrganisationId: () => {},
   loginMethod: undefined,
-  setLoginMethod: () => {}
+  setLoginMethod: () => {},
+  userDetails: undefined,
+  setUserDetails: () => {},
+  roles: [],
+  setRoles: () => {}
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
@@ -45,6 +54,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [jwtToken, setJwtToken] = useState<string>('');
   const [organisationId, setOrganisationId] = useState<string>('');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>();
+  const [userDetails, setUserDetails] = useState<IDataType>();
+  const [roles, setRoles] = useState<Role[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -83,6 +94,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     localStorage.removeItem('organisationId');
     setLoginMethod(undefined);
     localStorage.removeItem('loginMethod');
+    setUserDetails(undefined);
+    setRoles([]);
     router.push('/login');
   };
 
@@ -98,7 +111,11 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         organisationId,
         setOrganisationId,
         loginMethod,
-        setLoginMethod
+        setLoginMethod,
+        userDetails,
+        setUserDetails,
+        roles,
+        setRoles
       }}
     >
       {children}

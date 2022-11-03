@@ -3,18 +3,22 @@ import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
+import { ENDPOINTS, LoginMethod, USER_ENDPOINTS } from '../../consts';
 import { useAuth, useModal } from '../../providers';
-import { openNotification } from '../../utils/utils';
+import { getUserDetails, openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
-import { IDataType, Role, RoleColor, Status, StatusColor } from './types';
-
-var utc = require('dayjs/plugin/utc');
-dayjs.extend(utc);
+import {
+  IDataType,
+  Role,
+  RoleColor,
+  RoleObj,
+  Status,
+  StatusColor
+} from './types';
 
 export const AccessControlManagement: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -23,6 +27,7 @@ export const AccessControlManagement: React.FC = () => {
   const { setModal, setIsOpen } = useModal();
   const [form] = useForm();
   const { jwtToken, loginMethod, organisationId } = useAuth();
+  const [permissions, setPermissions] = useState<Role[]>();
 
   const fetchUserList = async () => {
     setLoading(true);
@@ -43,6 +48,15 @@ export const AccessControlManagement: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    const details = await getUserDetails(token, method);
+    const roles: RoleObj = details.roles.find(
+      (role: RoleObj) => role.organizationId === organisationId
+    );
+    console.log(roles.permission);
+    setPermissions(roles.permission);
   };
 
   const editUser = async (values: any) => {
@@ -75,8 +89,8 @@ export const AccessControlManagement: React.FC = () => {
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
-            'organization-id': 'MyBank',
-            'login-method': 'HOSTED'
+            'login-method': loginMethod,
+            'organization-id': organisationId
           }
         }
       );
@@ -88,11 +102,12 @@ export const AccessControlManagement: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!jwtToken) {
+    if (!jwtToken || !loginMethod || !organisationId) {
       return;
     }
     fetchUserList();
-  }, [jwtToken]);
+    fetchUserDetails(jwtToken, loginMethod);
+  }, [jwtToken, loginMethod, organisationId]);
 
   const columns: ColumnsType<IDataType> = [
     {
@@ -122,8 +137,7 @@ export const AccessControlManagement: React.FC = () => {
       title: 'Updated At',
       width: 220,
       render: (_, { updatedAt }) =>
-        // @ts-ignore
-        dayjs.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
+        moment.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
     },
     {
       title: 'Roles',

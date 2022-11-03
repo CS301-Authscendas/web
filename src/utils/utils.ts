@@ -29,7 +29,6 @@ export const getUserDetails = async (
         }
       }
     );
-    console.log('details', resp.data.data.userDetails);
     return resp.data.data.userDetails;
   } catch (e) {
     message.error('Error occurred retrieving user roles');

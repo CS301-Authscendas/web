@@ -302,7 +302,7 @@ export const AccessControlManagement: React.FC = () => {
   return (
     <HomeContent title="Access Control Management">
       <input
-        className="rounded-md border p-3 focus:border-custom-blue-light border-custom-blue-default mb-10 w-full"
+        className="h-10 rounded-md border p-3 focus:border-custom-blue-light border-custom-blue-default mb-2 w-full"
         type="text"
         placeholder="Search..."
         value={search}
@@ -311,6 +311,7 @@ export const AccessControlManagement: React.FC = () => {
       <Table
         loading={loading}
         columns={columns}
+        pagination={{ position: ['topRight', 'bottomRight'] }}
         dataSource={data.filter((record: IDataType) =>
           JSON.stringify(record).toLowerCase().includes(search.toLowerCase())
         )}

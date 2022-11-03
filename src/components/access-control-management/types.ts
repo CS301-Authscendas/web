@@ -38,3 +38,13 @@ export enum StatusColor {
   APPROVED = 'green',
   PENDING = 'volcano'
 }
+
+export interface IEditUserReq {
+  firstName: string;
+  lastName: string;
+  email: string;
+  birthDate: string;
+  phoneNumber: string;
+  roles: RoleObj[];
+  status: Status;
+}

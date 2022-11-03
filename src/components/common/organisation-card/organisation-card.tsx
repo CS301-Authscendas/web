@@ -51,7 +51,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       className="cursor-pointer rounded-lg bg-white hover:bg-gray-50 h-14 flex items-center justify-between px-8"
     >
       {/* TODO: change name */}
-      <p className="font-semibold mr-8">{organisationId}</p>
+      <p className="font-semibold text-base mr-8">{organisationId}</p>
       <div className="flex space-x-4">
         <>
           {permisions.map((permision, i) => {

@@ -1,9 +1,10 @@
 import { Form, Input, Select } from 'antd';
+import { FormInstance } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
-import { Role, Status, IDataType } from './types';
+import { Role, Status, IDataType, IEditUserReq } from './types';
 
 interface IProps extends IDataType {
-  form: any;
+  form: FormInstance;
 }
 
 const validateMessages = {
@@ -34,7 +35,11 @@ export const EditDetails = ({ form, ...props }: IProps) => {
     });
 
   useEffect(() => {
-    form.setFieldsValue({ ...props, roles: props.roles[0].permission });
+    form.setFieldsValue({
+      ...props,
+      phoneNumber: props.phoneNumber || undefined,
+      roles: props.roles[0].permission
+    });
   }, [props.email]);
 
   return (
@@ -59,6 +64,16 @@ export const EditDetails = ({ form, ...props }: IProps) => {
         name="email"
         label="Email"
         rules={[{ required: true }, { type: 'email' }]}
+      >
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item name="phoneNumber" label="Phone">
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item
+        name="birthDate"
+        label="Birth Date"
+        rules={[{ required: true }]}
       >
         <Input allowClear />
       </Form.Item>

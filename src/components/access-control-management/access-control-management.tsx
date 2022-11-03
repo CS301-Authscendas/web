@@ -13,6 +13,7 @@ import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
 import {
   IDataType,
+  IEditUserReq,
   Role,
   RoleColor,
   RoleObj,
@@ -25,7 +26,7 @@ export const AccessControlManagement: React.FC = () => {
   const [data, setData] = useState<IDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
-  const [form] = useForm();
+  const [form] = useForm<IEditUserReq>();
   const { jwtToken, loginMethod, organisationId } = useAuth();
   const [permissions, setPermissions] = useState<Role[]>();
 
@@ -59,7 +60,7 @@ export const AccessControlManagement: React.FC = () => {
     setPermissions(roles.permission);
   };
 
-  const editUser = async (values: any) => {
+  const editUser = async (values: IEditUserReq) => {
     try {
       await axios.put(
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
@@ -131,6 +132,18 @@ export const AccessControlManagement: React.FC = () => {
       title: 'Email',
       dataIndex: 'email',
       width: 240,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Phone',
+      render: ({ phoneNumber }) => phoneNumber || '-',
+      width: 180,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Birth Date',
+      dataIndex: 'birthDate',
+      width: 150,
       sorter: (a, b) => (a.email > b.email ? 1 : -1)
     },
     {

@@ -29,7 +29,7 @@ export const Organisation: React.FC = () => {
 
   return (
     <div className="bg-custom-white-dark h-screen py-16 px-24">
-      <p className="text-2xl font-medium mb-8">
+      <p className="text-2xl font-medium mb-9">
         {loading ? 'Organisations' : `${name}'s Organisations`}
       </p>
       {loading ? (

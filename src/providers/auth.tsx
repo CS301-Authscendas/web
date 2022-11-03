@@ -74,7 +74,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     }
     const orgName = localStorage.getItem('organisationName');
     if (orgName) {
-      setOrganisationId(orgName);
+      setOrganisationName(orgName);
     }
     const login = localStorage.getItem('loginMethod');
     if (login) {

@@ -54,7 +54,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
   };
 
   return (
-    <Layout className="h-screen">
+    <Layout className="min-h-screen">
       <SideBar
         collapsed={collapsed}
         handleOnClick={handleOnClick}

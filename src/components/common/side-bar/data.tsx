@@ -4,6 +4,7 @@ import {
   SafetyOutlined
 } from '@ant-design/icons';
 import { MenuProps } from 'antd';
+import { Role } from '../../access-control-management/types';
 import { ELabels, TMenuItem } from './types';
 
 const renderComponent = (
@@ -20,8 +21,32 @@ const renderComponent = (
   } as TMenuItem;
 };
 
-export const items: MenuProps['items'] = [
-  renderComponent('Access Control', ELabels.ACCESS_CONTROL, <SafetyOutlined />),
-  renderComponent('Upload File', ELabels.UPLOAD_FILE, <CloudUploadOutlined />),
-  renderComponent('Rewards', ELabels.REWARDS, <GiftOutlined />)
-];
+export const getItems = (roles: Role[]) => {
+  const items: MenuProps['items'] = [];
+
+  if (
+    roles.includes(Role.ADMIN_READ) ||
+    roles.includes(Role.ADMIN_WRITE) ||
+    roles.includes(Role.ADMIN_DELETE)
+  ) {
+    items.push(
+      renderComponent(
+        'Access Control',
+        ELabels.ACCESS_CONTROL,
+        <SafetyOutlined />
+      )
+    );
+    items.push(
+      renderComponent(
+        'Upload File',
+        ELabels.UPLOAD_FILE,
+        <CloudUploadOutlined />
+      )
+    );
+  }
+  if (roles.includes(Role.USER)) {
+    items.push(renderComponent('Rewards', ELabels.REWARDS, <GiftOutlined />));
+  }
+
+  return items;
+};

@@ -5,9 +5,9 @@ import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { ENDPOINTS, LoginMethod, USER_ENDPOINTS } from '../../consts';
+import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
 import { useAuth, useModal } from '../../providers';
-import { getUserDetails, openNotification } from '../../utils/utils';
+import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
@@ -22,7 +22,7 @@ import {
 } from './types';
 
 export const AccessControlManagement: React.FC = () => {
-  const { jwtToken, loginMethod, organisationId } = useAuth();
+  const { jwtToken, loginMethod, organisationId, userDetails } = useAuth();
   const [search, setSearch] = useState('');
   const [data, setData] = useState<IDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -50,16 +50,6 @@ export const AccessControlManagement: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const fetchUserDetails = async (token: string, method: LoginMethod) => {
-    const details = await getUserDetails(token, method);
-    const roles: RoleObj = details.roles.find(
-      (role: RoleObj) => role.organizationId === organisationId
-    );
-    console.log(details);
-    setPermissions(roles.permission);
-    setUserId(details.id);
   };
 
   const editUser = async (values: IEditUserForm) => {
@@ -109,14 +99,18 @@ export const AccessControlManagement: React.FC = () => {
       return;
     }
     fetchUserList();
-    fetchUserDetails(jwtToken, loginMethod);
   }, [jwtToken, loginMethod, organisationId]);
 
-  // const roles = userDetails!.roles.find(
-  //   (role: RoleObj) => role.organizationId === organisationId
-  // ) as RoleObj;
-  // setPermissions(roles.permission);
-  // setUserId(userDetails!.id);
+  useEffect(() => {
+    if (!userDetails) {
+      return;
+    }
+    const roles = userDetails.roles.find(
+      (role: RoleObj) => role.organizationId === organisationId
+    );
+    setPermissions(roles!.permission);
+    setUserId(userDetails.id);
+  }, [userDetails]);
 
   const columns: ColumnsType<IDataType> = [
     {

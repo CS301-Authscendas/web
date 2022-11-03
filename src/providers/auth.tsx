@@ -7,7 +7,7 @@ import {
   useEffect,
   useState
 } from 'react';
-import { IDataType } from '../components/access-control-management/types';
+import { IDataType, Role } from '../components/access-control-management/types';
 import { LoginMethod } from '../consts';
 
 interface IAuthContext {
@@ -23,6 +23,8 @@ interface IAuthContext {
   setLoginMethod: Dispatch<SetStateAction<LoginMethod | undefined>>;
   userDetails: IDataType | undefined;
   setUserDetails: Dispatch<SetStateAction<IDataType | undefined>>;
+  roles: Role[];
+  setRoles: Dispatch<SetStateAction<Role[]>>;
 }
 
 interface IProps {
@@ -41,7 +43,9 @@ const AuthContext = createContext<IAuthContext>({
   loginMethod: undefined,
   setLoginMethod: () => {},
   userDetails: undefined,
-  setUserDetails: () => {}
+  setUserDetails: () => {},
+  roles: [],
+  setRoles: () => {}
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
@@ -51,6 +55,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [organisationId, setOrganisationId] = useState<string>('');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>();
   const [userDetails, setUserDetails] = useState<IDataType>();
+  const [roles, setRoles] = useState<Role[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -90,6 +95,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     setLoginMethod(undefined);
     localStorage.removeItem('loginMethod');
     setUserDetails(undefined);
+    setRoles([]);
     router.push('/login');
   };
 
@@ -107,7 +113,9 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         loginMethod,
         setLoginMethod,
         userDetails,
-        setUserDetails
+        setUserDetails,
+        roles,
+        setRoles
       }}
     >
       {children}

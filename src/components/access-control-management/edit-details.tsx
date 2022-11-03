@@ -1,6 +1,7 @@
 import { Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
+import { useAuth } from '../../providers/auth';
 import { Role, Status, IDataType, IEditUserForm } from './types';
 
 interface IProps extends IDataType {
@@ -16,6 +17,8 @@ const validateMessages = {
 };
 
 export const EditDetails = ({ form, ...props }: IProps) => {
+  const { userDetails } = useAuth();
+
   const renderRoleOptions = () =>
     Object.values(Role).map(role => {
       return (
@@ -73,7 +76,12 @@ export const EditDetails = ({ form, ...props }: IProps) => {
         hasFeedback
         rules={[{ required: true }]}
       >
-        <Select allowClear mode="multiple" placeholder="Please select role(s)">
+        <Select
+          disabled={userDetails?.id === props.id}
+          allowClear
+          mode="multiple"
+          placeholder="Please select role(s)"
+        >
           {renderRoleOptions()}
         </Select>
       </Form.Item>

@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
-import { AUTH_ENDPOINTS, ENDPOINTS } from '../consts';
+import { AUTH_ENDPOINTS, ENDPOINTS, LoginMethod } from '../consts';
 import { useAuth } from '../providers';
 import { openNotification } from '../utils/utils';
 
 const TwoFAPage: NextPage = () => {
   const [token, setToken] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const { setJwtToken } = useAuth();
+  const { setJwtToken, setLoginMethod } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -24,26 +24,27 @@ const TwoFAPage: NextPage = () => {
     setToken(value);
   };
 
-  const handleSubmit = () => {
-    axios
-      .post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_2FA}`, {
-        email,
-        token
-      })
-      .then(res => {
-        if (res.status == 201) {
-          setJwtToken(res.data.token);
-          localStorage.setItem('jwtToken', res.data.token);
-          router.push('/organisations');
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(
+        `${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_2FA}`,
+        {
+          email,
+          token
         }
-      })
-      .catch(err => {
-        openNotification(
-          'top',
-          'Invalid 2fa token',
-          'Please key in the correct 2fa token.'
-        );
-      });
+      );
+      setJwtToken(res.data.token);
+      localStorage.setItem('jwtToken', res.data.token);
+      setLoginMethod(LoginMethod.HOSTED);
+      localStorage.setItem('loginMethod', LoginMethod.HOSTED);
+      router.push('/organisations');
+    } catch (e) {
+      openNotification(
+        'top',
+        'Invalid 2fa token',
+        'Please key in the correct 2fa token.'
+      );
+    }
   };
 
   return (

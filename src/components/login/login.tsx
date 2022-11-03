@@ -2,7 +2,6 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import validator from 'validator';
 import { AUTH_ENDPOINTS, ENDPOINTS } from '../../consts';
 import { AuthService } from '../../services';
 import { openNotification } from '../../utils/utils';
@@ -13,7 +12,6 @@ export const Login: React.FC = () => {
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,9 +21,6 @@ export const Login: React.FC = () => {
     switch (key) {
       case 'email':
         setEmail(value);
-        if (!validator.isEmail(value)) {
-          setErrorMessage('Invalid email address');
-        }
         break;
       case 'password':
         setPassword(value);
@@ -36,30 +31,26 @@ export const Login: React.FC = () => {
     setIsDisabled(!(email && password));
   }, [email, password]);
 
-  const handleOnSubmit = () => {
-    axios
-      .post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.LOGIN}`, {
+  const handleOnSubmit = async () => {
+    try {
+      await axios.post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.LOGIN}`, {
         email,
         password
-      })
-      .then(response => {
-        if (response.status == 201) {
-          router.push(
-            {
-              pathname: '/2fa',
-              query: { email: email }
-            },
-            '/2fa'
-          );
-        }
-      })
-      .catch(err => {
-        openNotification(
-          'top',
-          'Log in unsuccessful',
-          'Please check your email and password.'
-        );
       });
+      router.push(
+        {
+          pathname: '/2fa',
+          query: { email: email }
+        },
+        '/2fa'
+      );
+    } catch (e) {
+      openNotification(
+        'top',
+        'Log in unsuccessful',
+        'Please check your email and password.'
+      );
+    }
   };
 
   return (

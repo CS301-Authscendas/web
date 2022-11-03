@@ -25,7 +25,6 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
   const [password, setPassword] = useState<string>('');
   const [agreeTNC, setAgreeTNC] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [errorMessage, setErrorMessage] = useState<string>();
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const key = event.target.name;
@@ -49,7 +48,6 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
         break;
       case 'agreeTNC':
         setAgreeTNC(!agreeTNC);
-        break;
     }
   };
 

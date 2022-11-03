@@ -28,3 +28,8 @@ export const ENDPOINTS = {
       ? 'http://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
       : 'http://localhost:3000/api'
 };
+
+export enum LoginMethod {
+  HOSTED = 'HOSTED',
+  SSO = 'SSO'
+}

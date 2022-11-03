@@ -22,13 +22,14 @@ import {
 } from './types';
 
 export const AccessControlManagement: React.FC = () => {
+  const { jwtToken, loginMethod, organisationId } = useAuth();
   const [search, setSearch] = useState('');
   const [data, setData] = useState<IDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
   const [form] = useForm<IEditUserReq>();
-  const { jwtToken, loginMethod, organisationId } = useAuth();
   const [permissions, setPermissions] = useState<Role[]>();
+  const [userId, setUserId] = useState<string>('');
 
   const fetchUserList = async () => {
     setLoading(true);
@@ -56,8 +57,9 @@ export const AccessControlManagement: React.FC = () => {
     const roles: RoleObj = details.roles.find(
       (role: RoleObj) => role.organizationId === organisationId
     );
-    console.log(roles.permission);
+    console.log(details);
     setPermissions(roles.permission);
+    setUserId(details.id);
   };
 
   const editUser = async (values: IEditUserReq) => {
@@ -244,7 +246,7 @@ export const AccessControlManagement: React.FC = () => {
       width: 90,
       render: (_, record) => (
         <div className="space-x-5">
-          {permissions?.includes(Role.ADMIN_WRITE) ? (
+          {record.id !== userId && permissions?.includes(Role.ADMIN_WRITE) ? (
             <EditOutlined
               onClick={() => handleOnEdit(record)}
               style={{ color: '#5C73DB' }}
@@ -257,7 +259,7 @@ export const AccessControlManagement: React.FC = () => {
               />
             </Tooltip>
           )}
-          {permissions?.includes(Role.ADMIN_DELETE) ? (
+          {record.id !== userId && permissions?.includes(Role.ADMIN_DELETE) ? (
             <DeleteOutlined
               onClick={() => handleOnDelete(record)}
               style={{ color: '#DC2626' }}

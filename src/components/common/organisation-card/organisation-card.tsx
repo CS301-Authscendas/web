@@ -50,6 +50,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
 
     setOrganisationId(organizationId);
     localStorage.setItem('organisationId', organizationId);
+    localStorage.setItem('organisationName', organizationName);
     setRoles(permissions);
 
     let isAdmin = false;

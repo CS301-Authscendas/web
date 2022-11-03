@@ -18,7 +18,7 @@ export const HomeContent = ({ title, children }: IProps) => {
   };
 
   return (
-    <>
+    <Fragment>
       <div className="flex justify-between items-center mb-8">
         <div className="text-2xl font-medium">{title}</div>
         <Button type="primary" ghost onClick={changeOrganisation}>
@@ -26,6 +26,6 @@ export const HomeContent = ({ title, children }: IProps) => {
         </Button>
       </div>
       {children}
-    </>
+    </Fragment>
   );
 };

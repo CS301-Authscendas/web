@@ -7,6 +7,7 @@ import {
   useEffect,
   useState
 } from 'react';
+import { LoginMethod } from '../consts';
 
 interface IAuthContext {
   isLoading: boolean;
@@ -15,8 +16,10 @@ interface IAuthContext {
   isLoggedIn: boolean;
   jwtToken: string;
   setJwtToken: Dispatch<SetStateAction<string>>;
-  organisation: string;
-  setOrganisation: Dispatch<SetStateAction<string>>;
+  organisationId: string;
+  setOrganisationId: Dispatch<SetStateAction<string>>;
+  loginMethod: LoginMethod | undefined;
+  setLoginMethod: Dispatch<SetStateAction<LoginMethod | undefined>>;
 }
 
 interface IProps {
@@ -30,21 +33,32 @@ const AuthContext = createContext<IAuthContext>({
   isLoggedIn: false,
   jwtToken: '',
   setJwtToken: () => {},
-  organisation: '',
-  setOrganisation: () => {}
+  organisationId: '',
+  setOrganisationId: () => {},
+  loginMethod: undefined,
+  setLoginMethod: () => {}
 });
 
 export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [jwtToken, setJwtToken] = useState<string>('');
-  const [organisation, setOrganisation] = useState<string>('');
+  const [organisationId, setOrganisationId] = useState<string>('');
+  const [loginMethod, setLoginMethod] = useState<LoginMethod>();
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem('jwtToken')) {
-      const jwt = localStorage.getItem('jwtToken');
-      setJwtToken(jwt!);
+    const jwt = localStorage.getItem('jwtToken');
+    if (jwt) {
+      setJwtToken(jwt);
+    }
+    const org = localStorage.getItem('organisationId');
+    if (org) {
+      setOrganisationId(org);
+    }
+    const login = localStorage.getItem('loginMethod');
+    if (login) {
+      setLoginMethod(login as LoginMethod);
     }
   }, []);
 
@@ -65,6 +79,10 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const logout = () => {
     setJwtToken('');
     localStorage.removeItem('jwtToken');
+    setOrganisationId('');
+    localStorage.removeItem('organisationId');
+    setLoginMethod(undefined);
+    localStorage.removeItem('loginMethod');
     router.push('/login');
   };
 
@@ -77,8 +95,10 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         isLoggedIn,
         jwtToken,
         setJwtToken,
-        organisation,
-        setOrganisation
+        organisationId,
+        setOrganisationId,
+        loginMethod,
+        setLoginMethod
       }}
     >
       {children}

@@ -15,10 +15,11 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   permisions
 }) => {
   const router = useRouter();
-  const { logout, setOrganisation } = useAuth();
+  const { logout, setOrganisationId } = useAuth();
 
   const onClick = () => {
-    setOrganisation(organisationId);
+    setOrganisationId(organisationId);
+    localStorage.setItem('organisationId', organisationId);
 
     let isAdmin = false;
     let isUser = false;
@@ -42,8 +43,6 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       logout();
     }
   };
-
-  // const
 
   return (
     <div

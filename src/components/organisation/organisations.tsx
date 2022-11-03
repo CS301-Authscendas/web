@@ -1,31 +1,25 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
+import { LoginMethod } from '../../consts';
 import { useAuth } from '../../providers';
-import { Role, RoleObj } from '../access-control-management/types';
+import { getUserDetails } from '../../utils/utils';
+import { RoleObj } from '../access-control-management/types';
 import { OrganisationCard } from '../common/organisation-card';
 
 export const Organisation: React.FC = () => {
-  const { jwtToken } = useAuth();
+  const { jwtToken, loginMethod } = useAuth();
   const [roles, setRoles] = useState<RoleObj[]>();
 
-  const fetchUserDetails = async () => {
-    const resp = await axios.get(
-      `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.GET_USER}`,
-      {
-        headers: { Authorization: `Bearer ${jwtToken}` }
-      }
-    );
-    console.log(resp.data.data.userDetails.roles);
-    setRoles(resp.data.data.userDetails.roles);
+  const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    const details = await getUserDetails(token, method);
+    setRoles(details.roles);
   };
 
   useEffect(() => {
-    if (!jwtToken) {
+    if (!jwtToken || !loginMethod) {
       return;
     }
-    fetchUserDetails();
-  }, [jwtToken]);
+    fetchUserDetails(jwtToken, loginMethod);
+  }, [jwtToken, loginMethod]);
 
   return (
     <div className="bg-custom-white-dark h-screen p-24">
@@ -36,7 +30,7 @@ export const Organisation: React.FC = () => {
             <div key={i}>
               <OrganisationCard
                 organisationId={role.organizationId}
-                permisions={role.permission as Role[]}
+                permisions={role.permission}
               />
             </div>
           );

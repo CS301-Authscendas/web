@@ -26,7 +26,7 @@ export const ENDPOINTS = {
     'https://ix727qsigbfpryscilarebnks40pveep.lambda-url.us-east-1.on.aws/',
   GATEWAY:
     process.env.NODE_ENV === 'production'
-      ? 'http://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
+      ? 'https://authcendas-gateway-alb-1893231686.us-east-1.elb.amazonaws.com/api'
       : 'http://localhost:3000/api'
 };
 

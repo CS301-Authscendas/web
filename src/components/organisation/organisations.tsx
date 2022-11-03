@@ -1,8 +1,7 @@
-import { message } from 'antd';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
+import { LoginMethod } from '../../consts';
 import { useAuth } from '../../providers';
+import { getUserDetails } from '../../utils/utils';
 import { RoleObj } from '../access-control-management/types';
 import { OrganisationCard } from '../common/organisation-card';
 
@@ -10,29 +9,16 @@ export const Organisation: React.FC = () => {
   const { jwtToken, loginMethod } = useAuth();
   const [roles, setRoles] = useState<RoleObj[]>();
 
-  const fetchUserDetails = async () => {
-    try {
-      const resp = await axios.get(
-        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.GET_USER}`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            'login-method': loginMethod
-          }
-        }
-      );
-      console.log(resp.data.data.userDetails);
-      setRoles(resp.data.data.userDetails.roles);
-    } catch (e) {
-      message.error('Error occurred retrieving user roles');
-    }
+  const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    const details = await getUserDetails(token, method);
+    setRoles(details.roles);
   };
 
   useEffect(() => {
     if (!jwtToken || !loginMethod) {
       return;
     }
-    fetchUserDetails();
+    fetchUserDetails(jwtToken, loginMethod);
   }, [jwtToken, loginMethod]);
 
   return (

@@ -22,7 +22,7 @@ export const AccessControlManagement: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
   const [form] = useForm();
-  const { jwtToken } = useAuth();
+  const { jwtToken, loginMethod, organisationId } = useAuth();
 
   const fetchUserList = async () => {
     setLoading(true);
@@ -32,16 +32,17 @@ export const AccessControlManagement: React.FC = () => {
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
-            'organization-id': 'MyBank',
-            'login-method': 'HOSTED'
+            'login-method': loginMethod,
+            'organization-id': organisationId
           }
         }
       );
       setData(res.data);
     } catch (e) {
       openNotification('top', 'User list retrieval unsuccessful');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const editUser = async (values: any) => {
@@ -50,13 +51,13 @@ export const AccessControlManagement: React.FC = () => {
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
         {
           ...values,
-          roles: { organizationId: 'MyBank', permission: values.roles }
+          roles: { organizationId: organisationId, permission: values.roles }
         },
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
-            'organization-id': 'MyBank',
-            'login-method': 'HOSTED'
+            'login-method': loginMethod,
+            'organization-id': organisationId
           }
         }
       );

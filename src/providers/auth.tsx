@@ -19,6 +19,8 @@ interface IAuthContext {
   setJwtToken: Dispatch<SetStateAction<string>>;
   organisationId: string;
   setOrganisationId: Dispatch<SetStateAction<string>>;
+  organisationName: string;
+  setOrganisationName: Dispatch<SetStateAction<string>>;
   loginMethod: LoginMethod | undefined;
   setLoginMethod: Dispatch<SetStateAction<LoginMethod | undefined>>;
   userDetails: IDataType | undefined;
@@ -40,6 +42,8 @@ const AuthContext = createContext<IAuthContext>({
   setJwtToken: () => {},
   organisationId: '',
   setOrganisationId: () => {},
+  organisationName: '',
+  setOrganisationName: () => {},
   loginMethod: undefined,
   setLoginMethod: () => {},
   userDetails: undefined,
@@ -53,6 +57,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [jwtToken, setJwtToken] = useState<string>('');
   const [organisationId, setOrganisationId] = useState<string>('');
+  const [organisationName, setOrganisationName] = useState<string>('');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>();
   const [userDetails, setUserDetails] = useState<IDataType>();
   const [roles, setRoles] = useState<Role[]>([]);
@@ -63,9 +68,13 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     if (jwt) {
       setJwtToken(jwt);
     }
-    const org = localStorage.getItem('organisationId');
-    if (org) {
-      setOrganisationId(org);
+    const orgId = localStorage.getItem('organisationId');
+    if (orgId) {
+      setOrganisationId(orgId);
+    }
+    const orgName = localStorage.getItem('organisationName');
+    if (orgName) {
+      setOrganisationId(orgName);
     }
     const login = localStorage.getItem('loginMethod');
     if (login) {
@@ -110,6 +119,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         setJwtToken,
         organisationId,
         setOrganisationId,
+        organisationName,
+        setOrganisationName,
         loginMethod,
         setLoginMethod,
         userDetails,

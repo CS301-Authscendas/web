@@ -22,8 +22,14 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   permissions
 }) => {
   const router = useRouter();
-  const { jwtToken, loginMethod, logout, setOrganisationId, setRoles } =
-    useAuth();
+  const {
+    jwtToken,
+    loginMethod,
+    logout,
+    setOrganisationId,
+    setOrganisationName,
+    setRoles
+  } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   const onClick = async () => {
@@ -49,6 +55,8 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
     }
 
     setOrganisationId(organizationId);
+    setOrganisationName(organizationName);
+
     localStorage.setItem('organisationId', organizationId);
     localStorage.setItem('organisationName', organizationName);
     setRoles(permissions);

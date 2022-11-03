@@ -1,5 +1,6 @@
 import {
   CloudUploadOutlined,
+  DeleteOutlined,
   GiftOutlined,
   SafetyOutlined
 } from '@ant-design/icons';
@@ -47,6 +48,14 @@ export const getItems = (roles: Role[]) => {
   if (roles.includes(Role.USER)) {
     items.push(renderComponent('Rewards', ELabels.REWARDS, <GiftOutlined />));
   }
+
+  items.push(
+    renderComponent(
+      'Delete Account',
+      ELabels.DELETE_ACCOUNT,
+      <DeleteOutlined />
+    )
+  );
 
   return items;
 };

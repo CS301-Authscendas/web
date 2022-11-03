@@ -246,7 +246,7 @@ export const AccessControlManagement: React.FC = () => {
       width: 90,
       render: (_, record) => (
         <div className="space-x-5">
-          {record.id !== userId && permissions?.includes(Role.ADMIN_WRITE) ? (
+          {permissions?.includes(Role.ADMIN_WRITE) ? (
             <EditOutlined
               onClick={() => handleOnEdit(record)}
               style={{ color: '#5C73DB' }}

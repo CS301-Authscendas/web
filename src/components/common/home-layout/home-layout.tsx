@@ -1,8 +1,11 @@
 import { Layout } from 'antd';
+import axios from 'axios';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ELabels, LabelUrls, SideBar, TMenuHandleOnClick } from '..';
+import { ENDPOINTS, USER_ENDPOINTS } from '../../../consts';
 import { useAuth } from '../../../providers';
+import { DeleteAccount } from '../delete-account';
 
 interface HomeLayoutProps {
   defaultKey: ELabels;
@@ -14,7 +17,9 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
   children
 }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { jwtToken, logout } = useAuth();
+  const [openModal, setOpenModal] = useState(false);
+
+  const { jwtToken, loginMethod, organisationId } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -23,9 +28,24 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
     }
   }, [router]);
 
+  const onOk = () => {
+    // TODO: add delete user end pt
+    axios.delete(``, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        'login-method': loginMethod,
+        'organization-id': organisationId
+      }
+    });
+    setOpenModal(false);
+  };
   const handleOnClick: TMenuHandleOnClick = e => {
     const key = ELabels[e.key as keyof typeof ELabels];
-    router.push(LabelUrls[key]);
+    if (key === ELabels.DELETE_ACCOUNT) {
+      setOpenModal(true);
+    } else {
+      router.push(LabelUrls[key]);
+    }
   };
 
   const handleOnCollapsed = () => {
@@ -43,6 +63,13 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
       <Layout>
         <Layout.Content className="p-10 min-h-[360px] bg-custom-white-dark">
           {children}
+          {openModal && (
+            <DeleteAccount
+              openModal={openModal}
+              onOk={onOk}
+              onCancel={() => setOpenModal(false)}
+            />
+          )}
         </Layout.Content>
       </Layout>
     </Layout>

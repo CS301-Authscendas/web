@@ -3,7 +3,8 @@ import { MenuProps } from 'antd/lib/menu';
 export enum ELabels {
   ACCESS_CONTROL = 'ACCESS_CONTROL',
   UPLOAD_FILE = 'UPLOAD_FILE',
-  REWARDS = 'REWARDS'
+  REWARDS = 'REWARDS',
+  DELETE_ACCOUNT = 'DELETE_ACCOUNT'
 }
 
 export enum LabelUrls {

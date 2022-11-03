@@ -19,7 +19,7 @@ export const UploadFile: React.FC = () => {
       };
     },
     action:
-      'https://a7c6nds77sgkzgs22ldndv2jxm0wzbeh.lambda-url.us-east-1.on.aws/',
+      'https://rvnn3euufsbcfif3zzws32yneq0qarhp.lambda-url.us-east-1.on.aws/',
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {

@@ -60,7 +60,7 @@ const TwoFAPage: NextPage = () => {
         <p className="text-center font-normal">
           Thank you for registering! Please enter the 2FA
           <br />
-          token sent to your email within 10 minutes.
+          token sent to your email within 5 minutes.
         </p>
         <AuthCode
           onChange={handleOnChange}

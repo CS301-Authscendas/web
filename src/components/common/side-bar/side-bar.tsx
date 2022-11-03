@@ -1,5 +1,8 @@
 import { Layout, Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { LoginMethod } from '../../../consts';
+import { useAuth } from '../../../providers/auth';
+import { getUserDetails } from '../../../utils/utils';
 import { ColorScheme, Logo } from '../logo';
 import { items } from './data';
 import { ELabels, TMenuHandleOnClick } from './types';
@@ -12,8 +15,21 @@ interface IProps {
 }
 
 export const SideBar: React.FC<IProps> = (props: IProps) => {
+  const { jwtToken, loginMethod, setUserDetails } = useAuth();
   const { collapsed, handleOnCollapsed, handleOnClick, defaultKey } = props;
   const [isCollapsible, setIsCollapsible] = useState<boolean>(true);
+
+  const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    const details = await getUserDetails(token, method);
+    setUserDetails(details);
+  };
+
+  useEffect(() => {
+    if (!jwtToken || !loginMethod) {
+      return;
+    }
+    fetchUserDetails(jwtToken, loginMethod);
+  }, [jwtToken, loginMethod]);
 
   return (
     <Layout.Sider

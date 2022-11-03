@@ -1,13 +1,17 @@
-export interface IDataType {
-  id: string;
+export interface IEditUserForm {
   firstName: string;
   lastName: string;
   email: string;
   birthDate: string;
-  updatedAt: number;
-  phoneNumber: string;
-  roles: RoleObj[];
+  phoneNumber: string | undefined;
+  roles: Role[];
   status: Status;
+}
+
+export interface IDataType extends Omit<IEditUserForm, 'roles'> {
+  id: string;
+  roles: RoleObj[];
+  updatedAt: number;
 }
 
 export interface RoleObj {
@@ -37,14 +41,4 @@ export enum Status {
 export enum StatusColor {
   APPROVED = 'green',
   PENDING = 'volcano'
-}
-
-export interface IEditUserReq {
-  firstName: string;
-  lastName: string;
-  email: string;
-  birthDate: string;
-  phoneNumber: string;
-  roles: RoleObj[];
-  status: Status;
 }

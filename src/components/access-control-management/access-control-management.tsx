@@ -13,7 +13,7 @@ import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
 import {
   IDataType,
-  IEditUserReq,
+  IEditUserForm,
   Role,
   RoleColor,
   RoleObj,
@@ -27,7 +27,7 @@ export const AccessControlManagement: React.FC = () => {
   const [data, setData] = useState<IDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { setModal, setIsOpen } = useModal();
-  const [form] = useForm<IEditUserReq>();
+  const [form] = useForm<IEditUserForm>();
   const [permissions, setPermissions] = useState<Role[]>();
   const [userId, setUserId] = useState<string>('');
 
@@ -62,7 +62,7 @@ export const AccessControlManagement: React.FC = () => {
     setUserId(details.id);
   };
 
-  const editUser = async (values: IEditUserReq) => {
+  const editUser = async (values: IEditUserForm) => {
     try {
       await axios.put(
         `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.EDIT_USER_DETAILS}`,
@@ -112,6 +112,12 @@ export const AccessControlManagement: React.FC = () => {
     fetchUserDetails(jwtToken, loginMethod);
   }, [jwtToken, loginMethod, organisationId]);
 
+  // const roles = userDetails!.roles.find(
+  //   (role: RoleObj) => role.organizationId === organisationId
+  // ) as RoleObj;
+  // setPermissions(roles.permission);
+  // setUserId(userDetails!.id);
+
   const columns: ColumnsType<IDataType> = [
     {
       title: 'User ID',
@@ -135,24 +141,6 @@ export const AccessControlManagement: React.FC = () => {
       dataIndex: 'email',
       width: 240,
       sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Phone',
-      render: ({ phoneNumber }) => phoneNumber || '-',
-      width: 180,
-      sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Birth Date',
-      dataIndex: 'birthDate',
-      width: 150,
-      sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
-    {
-      title: 'Updated At',
-      width: 220,
-      render: (_, { updatedAt }) =>
-        moment.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
     },
     {
       title: 'Roles',
@@ -239,6 +227,24 @@ export const AccessControlManagement: React.FC = () => {
       filterMode: 'tree',
       filterSearch: true,
       onFilter: (value, record) => record.status === value
+    },
+    {
+      title: 'Birth Date',
+      dataIndex: 'birthDate',
+      width: 150,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Phone',
+      render: ({ phoneNumber }) => phoneNumber || '-',
+      width: 180,
+      sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    },
+    {
+      title: 'Updated At',
+      width: 220,
+      render: (_, { updatedAt }) =>
+        moment.utc(updatedAt * 1000).format('DD MMM YYYY HH:mm:ss')
     },
     {
       title: 'Actions',

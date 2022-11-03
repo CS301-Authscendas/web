@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { LoginMethod } from '../../consts';
 import { useAuth } from '../../providers';
@@ -8,10 +9,15 @@ import { OrganisationCard } from '../common/organisation-card';
 export const Organisation: React.FC = () => {
   const { jwtToken, loginMethod } = useAuth();
   const [roles, setRoles] = useState<RoleObj[]>();
+  const [name, setName] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
+    setLoading(true);
     const details = await getUserDetails(token, method);
     setRoles(details.roles);
+    setName(`${details.firstName} ${details.lastName}`);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -22,20 +28,23 @@ export const Organisation: React.FC = () => {
   }, [jwtToken, loginMethod]);
 
   return (
-    <div className="bg-custom-white-dark h-screen p-24">
-      <p className="text-2xl font-medium mb-5">Organisations</p>
-      <div className="space-y-4">
-        {roles?.map((role, i) => {
-          return (
-            <div key={i}>
-              <OrganisationCard
-                organisationId={role.organizationId}
-                permisions={role.permission}
-              />
-            </div>
-          );
-        })}
-      </div>
+    <div className="bg-custom-white-dark h-screen py-16 px-24">
+      <p className="text-2xl font-medium mb-8">
+        {loading ? 'Organisations' : `${name}'s Organisations`}
+      </p>
+      {loading ? (
+        <Spin />
+      ) : (
+        <div className="space-y-4">
+          {roles?.map((role, i) => (
+            <OrganisationCard
+              key={i}
+              organisationId={role.organizationId}
+              permisions={role.permission}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

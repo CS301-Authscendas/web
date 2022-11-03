@@ -1,9 +1,13 @@
 import { Tag } from 'antd';
-import { RightOutlined } from '@ant-design/icons';
+import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../../providers';
 import { Role, RoleColor } from '../../access-control-management/types';
 import { LabelUrls } from '../side-bar';
+import axios from 'axios';
+import { AUTH_ENDPOINTS, ENDPOINTS } from '../../../consts';
+import { openNotification } from '../../../utils/utils';
+import { useState } from 'react';
 
 interface OrganisationCardProps {
   key: number;
@@ -16,11 +20,34 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
   permisions
 }) => {
   const router = useRouter();
-  const { logout, setOrganisationId } = useAuth();
+  const { jwtToken, loginMethod, logout, setOrganisationId, setRoles } =
+    useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const onClick = () => {
+  const onClick = async () => {
+    setLoading(true);
+    try {
+      await axios.get(
+        `${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_LOGIN_METHOD}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'login-method': loginMethod,
+            'organization-id': organisationId
+          }
+        }
+      );
+    } catch (e) {
+      openNotification(
+        'top',
+        `${loginMethod} login method not supported for organisation`
+      );
+      return;
+    }
+
     setOrganisationId(organisationId);
     localStorage.setItem('organisationId', organisationId);
+    setRoles(permisions);
 
     let isAdmin = false;
     let isUser = false;
@@ -36,6 +63,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       }
     });
 
+    setLoading(false);
     if (isAdmin) {
       router.push(LabelUrls.ACCESS_CONTROL);
     } else if (isUser) {
@@ -68,7 +96,11 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
               </Tag>
             );
           })}
-          <RightOutlined className="my-auto" />
+          {loading ? (
+            <LoadingOutlined className="my-auto" />
+          ) : (
+            <RightOutlined className="my-auto" />
+          )}
         </>
       </div>
     </div>

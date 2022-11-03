@@ -7,7 +7,8 @@ export const AUTH_ENDPOINTS = {
   SSO_CALLBACK: '/auth/sso/callback',
   USER_SIGNUP_STATUS: '/auth/user-signup-status',
   GENERATE_JWT: '/auth/generate-jwt-token',
-  VALIDATE_JWT: '/auth/validate-jwt-token'
+  VALIDATE_JWT: '/auth/validate-jwt-token',
+  VALIDATE_LOGIN_METHOD: '/auth/validate-login-method'
 };
 
 export const USER_ENDPOINTS = {

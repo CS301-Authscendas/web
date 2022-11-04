@@ -93,7 +93,6 @@ export const Organisation: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {roles?.map((role, i) => {
-            console.log(role);
             return (
               <OrganisationCard
                 key={i}

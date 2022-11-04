@@ -104,8 +104,10 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
 
   useEffect(() => {
     if (
-      !['/', '/login', '/2fa', '/organisations'].includes(router.pathname) &&
-      !router.pathname.includes('/register')
+      (!['/', '/login', '/2fa', '/organisations'].includes(router.pathname) &&
+        !router.pathname.includes('/register')) ||
+      (router.pathname === '/organisations' && !router.query.jwtToken) ||
+      (router.pathname === '/2fa' && !router.query.email)
     ) {
       const jwt = localStorage.getItem('jwtToken');
       fetchValidateJwt(jwt);

@@ -16,8 +16,14 @@ interface IProps {
 }
 
 export const SideBar: React.FC<IProps> = (props: IProps) => {
-  const { organisationId, jwtToken, loginMethod, setUserDetails, roles } =
-    useAuth();
+  const {
+    organisationId,
+    jwtToken,
+    loginMethod,
+    setUserDetails,
+    roles,
+    setRoles
+  } = useAuth();
   const { collapsed, handleOnCollapsed, handleOnClick, defaultKey } = props;
   const [isCollapsible, setIsCollapsible] = useState<boolean>(true);
   const [newRoles, setNewRoles] = useState<Role[]>(roles);
@@ -25,11 +31,11 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     const details = await getUserDetails(token, method);
     setUserDetails(details);
-    setNewRoles(
-      details.roles.find(
-        (role: RoleObj) => role.organizationId === organisationId
-      ).permission
-    );
+    const updatedRoles = details.roles.find(
+      (role: RoleObj) => role.organizationId === organisationId
+    ).permission;
+    setNewRoles(updatedRoles);
+    setRoles(updatedRoles);
   };
 
   useEffect(() => {

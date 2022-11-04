@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerProps, Space } from 'antd';
+import { DatePicker, DatePickerProps } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
   const [agreeTNC, setAgreeTNC] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const onChangeBirthday: DatePickerProps['onChange'] = (date, dateString) => {
+  const onChangeBirthday: DatePickerProps['onChange'] = (_, dateString) => {
     setBirthDate(dateString);
   };
 
@@ -145,7 +145,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
         />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="birt">Birth Date</label>
+        <label htmlFor="birthDate">Birth Date</label>
         <DatePicker
           placeholder=""
           className="rounded-md h-10 border-gray-200 border p-3 focus:border-custom-blue-default"

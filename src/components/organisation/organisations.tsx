@@ -40,11 +40,10 @@ export const Organisation: React.FC = () => {
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     setLoading(true);
     console.log('token', token);
-    console.log('method', method);
     const details = await getUserDetails(token, method);
     setUserDetails(details);
-    let orgIds: string[] = [];
 
+    let orgIds: string[] = [];
     details?.roles.map((role: RoleObj) => {
       orgIds.push(role.organizationId);
     });
@@ -77,7 +76,6 @@ export const Organisation: React.FC = () => {
         }
       }
     );
-
     return data.data;
   };
 

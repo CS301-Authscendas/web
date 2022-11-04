@@ -18,6 +18,7 @@ export const DeleteAccount: React.FC<DeleteAccountProps> = ({
       onCancel={onCancel}
       okText="Ok"
       cancelText="Cancel"
+      okButtonProps={{ ghost: true }}
     >
       <p>Are you sure you want to delete your account?</p>
       <p>This action cannot be undone.</p>

@@ -87,7 +87,9 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     if (!jwt) {
       logout();
     }
-
+    if (!loginMethod) {
+      return;
+    }
     try {
       await axios.get(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_JWT}`, {
         headers: {
@@ -101,9 +103,6 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   };
 
   useEffect(() => {
-    if (!loginMethod) {
-      return;
-    }
     if (
       !['/', '/login', '/2fa', '/organisations'].includes(router.pathname) &&
       !router.pathname.includes('/register')

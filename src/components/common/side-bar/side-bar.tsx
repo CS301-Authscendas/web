@@ -45,7 +45,7 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
       return;
     }
     fetchUserDetails(jwtToken, loginMethod!);
-  }, [roles, jwtToken, loginMethod]);
+  }, [jwtToken, loginMethod]);
 
   return (
     <Layout.Sider

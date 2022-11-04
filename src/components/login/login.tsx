@@ -77,15 +77,13 @@ export const Login: React.FC = () => {
       </div>
       <div className="text-center">
         <span>Forgot your password? </span>
-        <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
-          Reset password
-        </a>
+        <a className="text-custom-blue-light underline">Reset password</a>
       </div>
       <Button onSubmit={handleOnSubmit} text="Login" isDisabled={isDisabled} />
       <div className="text-center">
         <span>Have QA credentials? </span>
         <a
-          className="text-custom-blue-light visited:text-custom-blue-lighter underline"
+          className="text-custom-blue-light underline"
           href={AuthService.ssoLoginRedirect()}
         >
           Sign in with SSO

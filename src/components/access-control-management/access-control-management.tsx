@@ -108,7 +108,7 @@ export const AccessControlManagement: React.FC = () => {
     const roles = userDetails.roles.find(
       (role: RoleObj) => role.organizationId === organisationId
     );
-    setPermissions(roles!.permission);
+    roles && setPermissions(roles.permission);
     setUserId(userDetails.id);
   }, [userDetails]);
 

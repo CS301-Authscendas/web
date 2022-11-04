@@ -77,11 +77,9 @@ export const Login: React.FC = () => {
       </div>
       <div className="text-center">
         <span>Forgot your password? </span>
-        <Link href="/forgot-password">
-          <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
-            Reset password
-          </a>
-        </Link>
+        <a className="text-custom-blue-light visited:text-custom-blue-lighter underline">
+          Reset password
+        </a>
       </div>
       <Button onSubmit={handleOnSubmit} text="Login" isDisabled={isDisabled} />
       <div className="text-center">

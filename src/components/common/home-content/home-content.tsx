@@ -23,7 +23,11 @@ export const HomeContent = ({ title, children }: IProps) => {
         <div className="text-2xl font-medium">{title}</div>
         <div className="flex items-center space-x-6">
           <div className="font-semibold text-base">
-            {`${organisationName} - ${userDetails?.firstName} ${userDetails?.lastName}`}
+            {`${organisationName} ${
+              userDetails
+                ? `- ${userDetails.firstName} ${userDetails.lastName}`
+                : ''
+            }`}
           </div>
           <Button onClick={changeOrganisation}>Change organisation</Button>
           <Button type="primary" ghost onClick={logout}>

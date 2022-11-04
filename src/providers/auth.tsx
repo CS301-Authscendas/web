@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -8,7 +9,7 @@ import {
   useState
 } from 'react';
 import { IDataType, Role } from '../components/access-control-management/types';
-import { LoginMethod } from '../consts';
+import { AUTH_ENDPOINTS, ENDPOINTS, LoginMethod } from '../consts';
 
 interface IAuthContext {
   isLoading: boolean;
@@ -81,6 +82,36 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
       setLoginMethod(login as LoginMethod);
     }
   }, []);
+
+  const fetchValidateJwt = async (jwt: string | null) => {
+    if (!jwt) {
+      logout();
+    }
+
+    try {
+      await axios.get(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.VALIDATE_JWT}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          'login-method': loginMethod
+        }
+      });
+    } catch (e) {
+      logout();
+    }
+  };
+
+  useEffect(() => {
+    if (!loginMethod) {
+      return;
+    }
+    if (
+      !['/', '/login', '/2fa'].includes(router.pathname) &&
+      !router.pathname.includes('/register')
+    ) {
+      const jwt = localStorage.getItem('jwtToken');
+      fetchValidateJwt(jwt);
+    }
+  }, [router.pathname, loginMethod]);
 
   useEffect(() => {
     if (isLoading) {

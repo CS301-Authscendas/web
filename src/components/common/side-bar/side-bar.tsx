@@ -16,27 +16,36 @@ interface IProps {
 }
 
 export const SideBar: React.FC<IProps> = (props: IProps) => {
-  const { organisationId, jwtToken, loginMethod, setUserDetails } = useAuth();
+  const {
+    organisationId,
+    jwtToken,
+    loginMethod,
+    setUserDetails,
+    roles,
+    setRoles
+  } = useAuth();
   const { collapsed, handleOnCollapsed, handleOnClick, defaultKey } = props;
   const [isCollapsible, setIsCollapsible] = useState<boolean>(true);
-  const [roles, setRoles] = useState<Role[]>();
+  const [newRoles, setNewRoles] = useState<Role[]>(roles);
 
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     const details = await getUserDetails(token, method);
     setUserDetails(details);
-    setRoles(
-      details.roles.find(
-        (role: RoleObj) => role.organizationId === organisationId
-      ).permission
-    );
+    const updatedRoles = details.roles.find(
+      (role: RoleObj) => role.organizationId === organisationId
+    ).permission;
+    setNewRoles(updatedRoles);
+    setRoles(updatedRoles);
   };
 
   useEffect(() => {
-    if (!jwtToken || !loginMethod) {
+    if (roles.length > 0) {
+      setNewRoles(roles);
+    } else if (!jwtToken || !loginMethod) {
       return;
     }
-    fetchUserDetails(jwtToken, loginMethod);
-  }, [jwtToken, loginMethod]);
+    fetchUserDetails(jwtToken, loginMethod!);
+  }, [roles, jwtToken, loginMethod]);
 
   return (
     <Layout.Sider
@@ -60,7 +69,7 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
         theme="dark"
         defaultSelectedKeys={[defaultKey]}
         mode="inline"
-        items={roles && getItems(roles)}
+        items={newRoles && getItems(newRoles)}
       />
     </Layout.Sider>
   );

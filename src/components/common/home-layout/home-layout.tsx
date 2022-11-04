@@ -1,7 +1,7 @@
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ELabels, LabelUrls, SideBar, TMenuHandleOnClick } from '..';
 import { ENDPOINTS, USER_ENDPOINTS } from '../../../consts';
 import { useAuth } from '../../../providers';
@@ -22,23 +22,23 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
   const { jwtToken, loginMethod, organisationId, logout } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!localStorage.getItem('jwtToken')) {
-      router.push('/');
+  const onOk = async () => {
+    try {
+      await axios.delete(
+        `${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.DELETE_MYSELF}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'login-method': loginMethod,
+            'organization-id': organisationId
+          }
+        }
+      );
+      setOpenModal(false);
+      logout();
+    } catch (e) {
+      message.error('Error occurred deleting user');
     }
-  }, [router]);
-
-  const onOk = () => {
-    // TODO: add delete user end pt
-    axios.delete(`${ENDPOINTS.GATEWAY}${USER_ENDPOINTS.DELETE_MYSELF}`, {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        'login-method': loginMethod,
-        'organization-id': organisationId
-      }
-    });
-    setOpenModal(false);
-    logout();
   };
   const handleOnClick: TMenuHandleOnClick = e => {
     const key = ELabels[e.key as keyof typeof ELabels];

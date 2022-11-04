@@ -6,16 +6,41 @@ import { useAuth } from '../../providers';
 import { getUserDetails } from '../../utils/utils';
 import { OrganisationCard } from '../common/organisation-card';
 import { OrgRole, RoleObj } from '../access-control-management/types';
+import { useRouter } from 'next/router';
 
 export const Organisation: React.FC = () => {
-  const { jwtToken, loginMethod, userDetails, setUserDetails } = useAuth();
+  const {
+    jwtToken,
+    setJwtToken,
+    loginMethod,
+    setLoginMethod,
+    userDetails,
+    setUserDetails
+  } = useAuth();
   const [roles, setRoles] = useState<OrgRole[]>();
-  const [name, setName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = router.query.jwtToken;
+    if (token) {
+      setJwtToken(token as string);
+      setLoginMethod(LoginMethod.SSO);
+      router.replace('/organisations');
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    if (!jwtToken || !loginMethod) {
+      return;
+    }
+    fetchUserDetails(jwtToken, loginMethod);
+  }, [jwtToken, loginMethod]);
 
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     setLoading(true);
-
+    console.log('token', token);
+    console.log('method', method);
     const details = await getUserDetails(token, method);
     setUserDetails(details);
     let orgIds: string[] = [];
@@ -34,7 +59,6 @@ export const Organisation: React.FC = () => {
     });
 
     setRoles(orgRoles);
-    setName(`${details.firstName} ${details.lastName}`);
     setLoading(false);
   };
 
@@ -57,28 +81,18 @@ export const Organisation: React.FC = () => {
     return data.data;
   };
 
-  useEffect(() => {
-    if (!jwtToken || !loginMethod) {
-      return;
-    }
-    fetchUserDetails(jwtToken, loginMethod);
-  }, [jwtToken, loginMethod]);
-
   return (
     <div className="bg-custom-white-dark h-screen py-16 px-24">
       <p className="text-2xl font-medium mb-9">
-        {loading
+        {loading || !userDetails
           ? 'Organisations'
-          : `${userDetails!.firstName} ${
-              userDetails!.lastName
-            }'s Organisations`}
+          : `${userDetails.firstName} ${userDetails.lastName}'s Organisations`}
       </p>
       {loading ? (
         <Spin />
       ) : (
         <div className="space-y-4">
           {roles?.map((role, i) => {
-            console.log(role);
             return (
               <OrganisationCard
                 key={i}

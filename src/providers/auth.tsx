@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
       return;
     }
     if (
-      !['/', '/login', '/2fa'].includes(router.pathname) &&
+      !['/', '/login', '/2fa', '/organisations'].includes(router.pathname) &&
       !router.pathname.includes('/register')
     ) {
       const jwt = localStorage.getItem('jwtToken');

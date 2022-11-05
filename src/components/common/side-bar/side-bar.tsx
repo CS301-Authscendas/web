@@ -33,7 +33,7 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
     setUserDetails(details);
     const updatedRoles = details.roles.find(
       (role: RoleObj) => role.organizationId === organisationId
-    ).permission;
+    )?.permission;
     setNewRoles(updatedRoles);
     setRoles(updatedRoles);
   };

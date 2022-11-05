@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ENDPOINTS, LoginMethod, USER_ENDPOINTS } from '../../consts';
@@ -15,7 +15,8 @@ export const Organisation: React.FC = () => {
     loginMethod,
     setLoginMethod,
     userDetails,
-    setUserDetails
+    setUserDetails,
+    logout
   } = useAuth();
   const [roles, setRoles] = useState<OrgRole[]>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,7 +26,9 @@ export const Organisation: React.FC = () => {
     const token = router.query.jwtToken;
     if (token) {
       setJwtToken(token as string);
+      localStorage.setItem('jwtToken', token as string);
       setLoginMethod(LoginMethod.SSO);
+      localStorage.setItem('loginMethod', LoginMethod.SSO);
       router.replace('/organisations');
     }
   }, [router.query]);
@@ -39,7 +42,6 @@ export const Organisation: React.FC = () => {
 
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     setLoading(true);
-    console.log('token', token);
     const details = await getUserDetails(token, method);
     setUserDetails(details);
 
@@ -81,11 +83,17 @@ export const Organisation: React.FC = () => {
 
   return (
     <div className="bg-custom-white-dark h-screen py-16 px-24">
-      <p className="text-2xl font-medium mb-9">
-        {loading || !userDetails
-          ? 'Organisations'
-          : `${userDetails.firstName} ${userDetails.lastName}'s Organisations`}
-      </p>
+      <div className="flex justify-between items-center mb-9">
+        <div className="text-2xl font-medium">
+          {loading || !userDetails
+            ? 'Organisations'
+            : `${userDetails.firstName} ${userDetails.lastName}'s Organisations`}
+        </div>
+        <Button type="primary" ghost onClick={logout}>
+          Logout
+        </Button>
+      </div>
+
       {loading ? (
         <Spin />
       ) : (

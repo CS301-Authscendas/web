@@ -106,9 +106,12 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     if (
       (!['/', '/login', '/2fa', '/organisations'].includes(router.pathname) &&
         !router.pathname.includes('/register')) ||
-      (router.pathname === '/organisations' && !router.query.jwtToken) ||
       (router.pathname === '/2fa' && !router.query.email)
     ) {
+      const org = localStorage.getItem('organisationId');
+      if (!org) {
+        logout();
+      }
       const jwt = localStorage.getItem('jwtToken');
       fetchValidateJwt(jwt);
     }
@@ -133,6 +136,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
     localStorage.removeItem('jwtToken');
     setOrganisationId('');
     localStorage.removeItem('organisationId');
+    setOrganisationName('');
+    localStorage.removeItem('organisationName');
     setLoginMethod(undefined);
     localStorage.removeItem('loginMethod');
     setUserDetails(undefined);

@@ -1,9 +1,8 @@
-import { DatePicker, DatePickerProps, Form, Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '../../providers/auth';
 import { Role, Status, IDataType, IEditUserForm } from './types';
-import moment from 'moment';
 
 interface IProps extends IDataType {
   form: FormInstance<IEditUserForm>;
@@ -19,7 +18,7 @@ const validateMessages = {
 
 export const EditDetails = ({ form, ...props }: IProps) => {
   const { userDetails } = useAuth();
-  const [birthDate, setBirthDate] = useState<string>('');
+  // const [birthDate, setBirthDate] = useState<string>('');
 
   const renderRoleOptions = () =>
     Object.values(Role).map(role => {
@@ -39,10 +38,10 @@ export const EditDetails = ({ form, ...props }: IProps) => {
       );
     });
 
-  const onChangeBirthday: DatePickerProps['onChange'] = (_, dateString) => {
-    setBirthDate(dateString);
-    form.setFieldValue('birthDate', dateString);
-  };
+  // const onChangeBirthday: DatePickerProps['onChange'] = (_, dateString) => {
+  //   setBirthDate(dateString);
+  //   form.setFieldValue('birthDate', dateString);
+  // };
 
   useEffect(() => {
     form.setFieldsValue({
@@ -50,7 +49,7 @@ export const EditDetails = ({ form, ...props }: IProps) => {
       phoneNumber: props.phoneNumber || undefined,
       roles: props.roles[0].permission
     });
-    setBirthDate(props.birthDate);
+    // setBirthDate(props.birthDate);
   }, [props.email]);
 
   return (
@@ -103,19 +102,19 @@ export const EditDetails = ({ form, ...props }: IProps) => {
           {renderStatusOptions()}
         </Select>
       </Form.Item>
-      <Form.Item label="Birth Date">
+      {/* <Form.Item label="Birth Date">
         <DatePicker
           value={moment(birthDate, 'YYYY-MM-DD')}
           style={{ width: '100%' }}
           onChange={onChangeBirthday}
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item name="phoneNumber" label="Phone">
         <Input allowClear />
       </Form.Item>
-      <Form.Item name="birthDate" hidden>
+      {/* <Form.Item name="birthDate" hidden>
         <Input value={birthDate} />
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 };

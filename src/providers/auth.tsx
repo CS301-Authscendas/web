@@ -177,14 +177,14 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
       {children}
       <Modal
         open={isModalOpen}
-        title="Token expired"
+        title="Session expired"
         centered
         okButtonProps={{ ghost: true, loading: refreshLoading }}
         closable={false}
         maskClosable={false}
         cancelText="Logout"
         onCancel={logout}
-        okText="Refresh token"
+        okText="Yes"
         onOk={async () => {
           setRefreshLoading(true);
           try {
@@ -199,7 +199,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
             setJwtToken(res.data.token);
             localStorage.setItem('jwtToken', res.data.token);
           } catch (err) {
-            message.error('Error refreshing token');
+            message.error('Error refreshing session');
             logout();
           } finally {
             setRefreshLoading(false);
@@ -207,7 +207,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
           }
         }}
       >
-        Your token is invalid/expired, please refresh your token.
+        Your session has expired. Do you wish to continue?
       </Modal>
     </AuthContext.Provider>
   );

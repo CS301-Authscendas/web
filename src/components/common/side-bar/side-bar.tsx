@@ -39,7 +39,7 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
   };
 
   useEffect(() => {
-    if (roles.length > 0) {
+    if (roles?.length > 0) {
       setNewRoles(roles);
     } else if (!jwtToken || !loginMethod) {
       return;

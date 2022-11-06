@@ -222,12 +222,12 @@ export const AccessControlManagement: React.FC = () => {
       filterSearch: true,
       onFilter: (value, record) => record.status === value
     },
-    {
-      title: 'Birth Date',
-      dataIndex: 'birthDate',
-      width: 150,
-      sorter: (a, b) => (a.email > b.email ? 1 : -1)
-    },
+    // {
+    //   title: 'Birth Date',
+    //   dataIndex: 'birthDate',
+    //   width: 150,
+    //   sorter: (a, b) => (a.email > b.email ? 1 : -1)
+    // },
     {
       title: 'Phone',
       render: ({ phoneNumber }) => phoneNumber || '-',

@@ -4,6 +4,7 @@ export const AUTH_ENDPOINTS = {
   GENERATE_2FA: '/auth/generate-2fa-token',
   VALIDATE_2FA: '/auth/validate-2fa-token',
   SSO_LOGIN: '/auth/sso/login',
+  AUTH0_LOGIN: '/auth/auth0/login',
   SSO_CALLBACK: '/auth/sso/callback',
   USER_SIGNUP_STATUS: '/auth/user-signup-status',
   GENERATE_JWT: '/auth/generate-jwt-token',
@@ -33,5 +34,6 @@ export const ENDPOINTS = {
 
 export enum LoginMethod {
   HOSTED = 'HOSTED',
-  SSO = 'SSO'
+  SSO = 'SSO',
+  AUTH0 = 'AUTH0'
 }

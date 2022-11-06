@@ -1,6 +1,5 @@
 import { Button } from 'antd';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
 import { useAuth } from '../../../providers';
 
 interface IProps {
@@ -18,7 +17,7 @@ export const HomeContent = ({ title, children }: IProps) => {
   };
 
   return (
-    <Fragment>
+    <div className="min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div className="text-2xl font-medium">{title}</div>
         <div className="flex items-center space-x-6">
@@ -36,6 +35,6 @@ export const HomeContent = ({ title, children }: IProps) => {
         </div>
       </div>
       {children}
-    </Fragment>
+    </div>
   );
 };

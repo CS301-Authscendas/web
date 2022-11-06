@@ -114,12 +114,6 @@ export const AccessControlManagement: React.FC = () => {
 
   const columns: ColumnsType<IDataType> = [
     {
-      title: 'User ID',
-      dataIndex: 'id',
-      width: 250,
-      sorter: (a, b) => (a.id > b.id ? 1 : -1)
-    },
-    {
       title: 'Name',
       width: 180,
       render: ({ firstName, lastName }) => (

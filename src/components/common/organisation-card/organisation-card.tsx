@@ -90,7 +90,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
       onClick={onClick}
       className="cursor-pointer rounded-lg bg-white hover:bg-gray-50 h-14 flex items-center justify-between px-8"
     >
-      <p className="font-semibold text-base mr-8">{organizationName}</p>
+      <div className="font-semibold text-base mr-8">{organizationName}</div>
       <div className="flex space-x-4">
         <>
           {permissions.map((permission, i) => {

@@ -207,7 +207,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
           }
         }}
       >
-        Your session has expired. Do you wish to continue?
+        Your session has expired. Do you wish to continue your session?
       </Modal>
     </AuthContext.Provider>
   );

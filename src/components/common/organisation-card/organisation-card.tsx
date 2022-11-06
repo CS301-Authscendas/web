@@ -1,4 +1,4 @@
-import { Tag } from 'antd';
+import { message, Tag } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../../providers';
@@ -6,7 +6,6 @@ import { Role, RoleColor } from '../../access-control-management/types';
 import { LabelUrls } from '../side-bar';
 import axios from 'axios';
 import { AUTH_ENDPOINTS, ENDPOINTS } from '../../../consts';
-import { openNotification } from '../../../utils/utils';
 import { useState } from 'react';
 
 interface OrganisationCardProps {
@@ -46,8 +45,7 @@ export const OrganisationCard: React.FC<OrganisationCardProps> = ({
         }
       );
     } catch (e) {
-      openNotification(
-        'top',
+      message.error(
         `${loginMethod} login method not supported for organisation`
       );
       setLoading(false);

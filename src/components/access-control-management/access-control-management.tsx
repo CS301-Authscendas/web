@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Table, Tag, Tooltip } from 'antd';
+import { message, Table, Tag, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
@@ -7,7 +7,6 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { ENDPOINTS, USER_ENDPOINTS } from '../../consts';
 import { useAuth, useModal } from '../../providers';
-import { openNotification } from '../../utils/utils';
 import { HomeContent } from '../common';
 import { DeleteUser } from './delete-user';
 import { EditDetails } from './edit-details';
@@ -46,7 +45,7 @@ export const AccessControlManagement: React.FC = () => {
       );
       setData(res.data);
     } catch (e) {
-      openNotification('top', 'User list retrieval unsuccessful');
+      message.error('Error occurred retrieving user list');
     } finally {
       setLoading(false);
     }
@@ -68,10 +67,10 @@ export const AccessControlManagement: React.FC = () => {
           }
         }
       );
-      openNotification('top', 'Successful update');
+      message.success('Successful update');
       await fetchUserList();
     } catch (e) {
-      openNotification('top', 'Update user unsuccessful');
+      message.error('Update user unsuccessful');
     }
   };
 
@@ -87,10 +86,10 @@ export const AccessControlManagement: React.FC = () => {
           }
         }
       );
-      openNotification('top', 'Successful deletion');
+      message.success('Successful deletion');
       await fetchUserList();
     } catch (e) {
-      openNotification('top', 'Delete user unsuccessful');
+      message.error('Delete user unsuccessful');
     }
   };
 

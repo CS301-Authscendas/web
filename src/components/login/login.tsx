@@ -1,11 +1,10 @@
-import { Switch } from 'antd';
+import { message, Switch } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AUTH_ENDPOINTS, ENDPOINTS, LoginMethod } from '../../consts';
 import { useAuth } from '../../providers';
 import { AuthService } from '../../services';
-import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
 
 export const Login: React.FC = () => {
@@ -61,11 +60,7 @@ export const Login: React.FC = () => {
         router.push('/organisations');
       }
     } catch (e) {
-      openNotification(
-        'top',
-        'Log in unsuccessful',
-        'Please check your email and password.'
-      );
+      message.error('Unsuccessful login, please check credentials');
     }
   };
 

@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios from 'axios';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -6,7 +7,6 @@ import AuthCode from 'react-auth-code-input';
 import { Button } from '../components/common';
 import { AUTH_ENDPOINTS, ENDPOINTS, LoginMethod } from '../consts';
 import { useAuth } from '../providers';
-import { openNotification } from '../utils/utils';
 
 const TwoFAPage: NextPage = () => {
   const [token, setToken] = useState<string>('');
@@ -39,11 +39,7 @@ const TwoFAPage: NextPage = () => {
       localStorage.setItem('loginMethod', LoginMethod.HOSTED);
       router.push('/organisations');
     } catch (e) {
-      openNotification(
-        'top',
-        'Invalid 2fa token',
-        'Please key in the correct 2fa token.'
-      );
+      message.error('Error occurred verifying 2fa token');
     }
   };
 

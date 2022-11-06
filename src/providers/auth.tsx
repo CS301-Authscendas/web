@@ -1,3 +1,4 @@
+import { message, Modal } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import {
@@ -62,6 +63,8 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   const [loginMethod, setLoginMethod] = useState<LoginMethod>();
   const [userDetails, setUserDetails] = useState<IDataType>();
   const [roles, setRoles] = useState<Role[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [refreshLoading, setRefreshLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -98,7 +101,11 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
         }
       });
     } catch (e) {
-      logout();
+      if (loginMethod !== LoginMethod.HOSTED) {
+        logout();
+      } else {
+        setIsModalOpen(true);
+      }
     }
   };
 
@@ -132,6 +139,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
   }, [isLoading, isLoggedIn]);
 
   const logout = () => {
+    setIsModalOpen(false);
     setJwtToken('');
     localStorage.removeItem('jwtToken');
     setOrganisationId('');
@@ -167,6 +175,40 @@ export const AuthProvider: React.FC<IProps> = ({ children }: IProps) => {
       }}
     >
       {children}
+      <Modal
+        open={isModalOpen}
+        title="Token expired"
+        centered
+        okButtonProps={{ ghost: true, loading: refreshLoading }}
+        closable={false}
+        maskClosable={false}
+        cancelText="Logout"
+        onCancel={logout}
+        okText="Refresh token"
+        onOk={async () => {
+          setRefreshLoading(true);
+          try {
+            const res = await axios.get(
+              `${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.REFRESH_JWT}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`
+                }
+              }
+            );
+            setJwtToken(res.data.token);
+            localStorage.setItem('jwtToken', res.data.token);
+          } catch (err) {
+            message.error('Error refreshing token');
+            logout();
+          } finally {
+            setRefreshLoading(false);
+            setIsModalOpen(false);
+          }
+        }}
+      >
+        Your token is invalid/expired, please refresh your token.
+      </Modal>
     </AuthContext.Provider>
   );
 };

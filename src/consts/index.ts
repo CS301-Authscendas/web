@@ -30,7 +30,7 @@ export const ENDPOINTS = {
   GATEWAY:
     process.env.NODE_ENV === 'production'
       ? 'https://api.itsag2t4.com/v1'
-      : 'http://localhost:3000/api'
+      : 'http://localhost:3000/v1'
 };
 
 export enum LoginMethod {

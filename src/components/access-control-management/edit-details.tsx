@@ -62,6 +62,13 @@ export const EditDetails = ({ form, ...props }: IProps) => {
       initialValues={{ ...props, roles: props.roles[0].permission }}
     >
       <Form.Item
+        name="email"
+        label="Email"
+        rules={[{ required: true }, { type: 'email' }]}
+      >
+        <Input disabled />
+      </Form.Item>
+      <Form.Item
         name="firstName"
         label="First Name"
         rules={[{ required: true }]}
@@ -69,13 +76,6 @@ export const EditDetails = ({ form, ...props }: IProps) => {
         <Input allowClear />
       </Form.Item>
       <Form.Item name="lastName" label="Last Name" rules={[{ required: true }]}>
-        <Input allowClear />
-      </Form.Item>
-      <Form.Item
-        name="email"
-        label="Email"
-        rules={[{ required: true }, { type: 'email' }]}
-      >
         <Input allowClear />
       </Form.Item>
       <Form.Item

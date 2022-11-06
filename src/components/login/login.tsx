@@ -1,8 +1,9 @@
+import { Switch } from 'antd';
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { AUTH_ENDPOINTS, ENDPOINTS } from '../../consts';
+import { AUTH_ENDPOINTS, ENDPOINTS, LoginMethod } from '../../consts';
+import { useAuth } from '../../providers';
 import { AuthService } from '../../services';
 import { openNotification } from '../../utils/utils';
 import { Button } from '../common/button';
@@ -13,6 +14,8 @@ export const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isHosted, setIsHosted] = useState<boolean>(true);
+  const { setJwtToken, setLoginMethod } = useAuth();
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const key = event.target.name;
@@ -33,17 +36,30 @@ export const Login: React.FC = () => {
 
   const handleOnSubmit = async () => {
     try {
-      await axios.post(`${ENDPOINTS.GATEWAY}${AUTH_ENDPOINTS.LOGIN}`, {
-        email,
-        password
-      });
-      router.push(
+      const res = await axios.post(
+        `${ENDPOINTS.GATEWAY}${
+          isHosted ? AUTH_ENDPOINTS.LOGIN : AUTH_ENDPOINTS.AUTH0_LOGIN
+        }`,
         {
-          pathname: '/2fa',
-          query: { email: email }
-        },
-        '/2fa'
+          email,
+          password
+        }
       );
+      if (isHosted) {
+        router.push(
+          {
+            pathname: '/2fa',
+            query: { email: email }
+          },
+          '/2fa'
+        );
+      } else {
+        setJwtToken(res.data.token);
+        localStorage.setItem('jwtToken', res.data.token);
+        setLoginMethod(LoginMethod.AUTH0);
+        localStorage.setItem('loginMethod', LoginMethod.AUTH0);
+        router.push('/organisations');
+      }
     } catch (e) {
       openNotification(
         'top',
@@ -75,6 +91,13 @@ export const Login: React.FC = () => {
           onChange={handleOnChange}
         />
       </div>
+      <Switch
+        checked={isHosted}
+        onChange={setIsHosted}
+        style={{ backgroundColor: '#4763E4', marginTop: 20, marginBottom: 20 }}
+        checkedChildren="HOSTED"
+        unCheckedChildren="AUTH0"
+      />
       <div className="text-center">
         <span>Forgot your password? </span>
         <a className="text-custom-blue-light underline">Reset password</a>

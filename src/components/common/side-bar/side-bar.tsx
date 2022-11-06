@@ -31,7 +31,7 @@ export const SideBar: React.FC<IProps> = (props: IProps) => {
   const fetchUserDetails = async (token: string, method: LoginMethod) => {
     const details = await getUserDetails(token, method);
     setUserDetails(details);
-    const updatedRoles = details.roles.find(
+    const updatedRoles = details?.roles?.find(
       (role: RoleObj) => role.organizationId === organisationId
     )?.permission;
     setNewRoles(updatedRoles);

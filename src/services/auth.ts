@@ -7,7 +7,7 @@ export const AuthService = {
     const redirectUrl =
       process.env.NODE_ENV === 'production'
         ? bankSsoUrl
-        : 'http://localhost:3000/api/auth/sso/login';
+        : 'http://localhost:3000/v1/auth/sso/login';
 
     return redirectUrl;
   }

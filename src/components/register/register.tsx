@@ -162,7 +162,7 @@ export const Register: React.FC<{ email: string }> = ({ email }) => {
           onChange={handleOnChange}
         />
       </div>
-      <div className="flex">
+      <div className="flex items-center">
         <input
           name="agreeTNC"
           type="checkbox"

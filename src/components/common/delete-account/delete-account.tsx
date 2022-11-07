@@ -17,7 +17,7 @@ export const DeleteAccount: React.FC<DeleteAccountProps> = ({
       open={openModal}
       onOk={onOk}
       onCancel={onCancel}
-      okText="Ok"
+      okText="Yes"
       cancelText="Cancel"
       okButtonProps={{ ghost: true }}
     >

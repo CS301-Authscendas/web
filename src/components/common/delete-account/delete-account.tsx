@@ -13,6 +13,7 @@ export const DeleteAccount: React.FC<DeleteAccountProps> = ({
   return (
     <Modal
       title="Delete account"
+      centered
       open={openModal}
       onOk={onOk}
       onCancel={onCancel}

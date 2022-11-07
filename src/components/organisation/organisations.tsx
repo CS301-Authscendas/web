@@ -51,9 +51,16 @@ export const Organisation: React.FC = () => {
     });
 
     const orgDetails = await fetchOrgNames(orgIds, token, method);
+    const orgDetailsMap: Record<string, any> = {};
+
+    orgDetails.forEach((details: { id: string }) => {
+      const id: string = details.id;
+      orgDetailsMap[id] = details;
+    });
+
     const orgRoles: OrgRole[] = await details.roles.map((role: RoleObj) => {
       return {
-        organizationName: orgDetails[role.organizationId],
+        organizationName: orgDetailsMap[role.organizationId]['name'],
         organizationId: role.organizationId,
         permission: role.permission
       };
